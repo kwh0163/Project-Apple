@@ -11,6 +11,9 @@ public class BuildArea : MonoBehaviour
 
     Block selectedBlock;
     Block copiedBlock;
+    Renderer copiedBlockRenderer;
+
+    bool isBlockMoving = false;
 
     public void Initialize()
     {
@@ -20,14 +23,22 @@ public class BuildArea : MonoBehaviour
         boxCollider.size = new Vector3(rectTransform.rect.width, rectTransform.rect.height, colliderSizeZ);
     }
 
+    public void SetActice(bool isActive)
+    {
+        gameObject.SetActive(isActive);
+    }
+
     private void OnMouseDown()
     {
+        if (isBlockMoving)
+            return;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit[] hits = Physics.RaycastAll(ray);
         foreach (var ele in hits)
         {
             if (ele.collider.TryGetComponent(out selectedBlock))
             {
+                isBlockMoving = true;
                 CopySelectedBlock();
                 break;
             }
@@ -45,25 +56,43 @@ public class BuildArea : MonoBehaviour
             Vector3 nextPos = hit.point;
             nextPos.z = 0;
             copiedBlock.MovePosition(nextPos);
+            ChangeColor(copiedBlock.CheckIsContained(boxCollider));
         }
 
     }
-    private void OnMouseExit()
+    private void OnMouseUp()
     {
+        if (selectedBlock == null)
+            return;
+
+        isBlockMoving = false;
+        if (copiedBlock.CheckIsContained(boxCollider))
+            selectedBlock.MovePosition(copiedBlock.transform.position);
+        Destroy(copiedBlock.gameObject);
         selectedBlock = null;
     }
 
     void CopySelectedBlock()
     {
-        copiedBlock = Instantiate(selectedBlock, selectedBlock.transform.position, Quaternion.identity);
-        Renderer render = copiedBlock.GetComponent<Renderer>();
-        render.material = new Material(render.material);
-        Color color = render.material.color;
+        copiedBlock = Instantiate(selectedBlock, selectedBlock.transform.position, selectedBlock.transform.rotation);
+        
+        copiedBlockRenderer = copiedBlock.GetComponent<Renderer>();
+        copiedBlockRenderer.material = new Material(copiedBlockRenderer.material);
+        Color color = copiedBlockRenderer.material.color;
         color.a = copiedBlockAlpha;
-        render.material.color = color;
+        copiedBlockRenderer.material.color = color;
 
-        MakeMaterialTransparent(render.material);
+        MakeMaterialTransparent(copiedBlockRenderer.material);
     }
+
+    void ChangeColor(bool isAble)
+    {
+        if (isAble)
+            copiedBlockRenderer.material.color = new Color(0, 1, 0, copiedBlockAlpha);
+        else
+            copiedBlockRenderer.material.color = new Color(1, 0, 0, copiedBlockAlpha);
+    }
+
     void MakeMaterialTransparent(Material material)
     {
         material.SetFloat("_Mode", 3);  // 3Àº Transparent ¸ðµå

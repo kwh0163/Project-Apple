@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     private static GameManager instance;
     public static GameManager Instance { get { return instance; } }
 
+    public StageManager Stage { get; private set; }
     public UIManager UI { get; private set; }
 
     private void Awake()
@@ -19,7 +20,9 @@ public class GameManager : MonoBehaviour
     void Initialize()
     {
         UI = GetComponentInChildren<UIManager>();
-
         UI.Initialize();
+
+        Stage = GetComponentInChildren<StageManager>();
+        Stage.Initialize();
     }
 }

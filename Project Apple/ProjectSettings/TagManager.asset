@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Block
+  - Apple
+  - Newton
+  - Floor
   layers:
   - Default
   - TransparentFX
