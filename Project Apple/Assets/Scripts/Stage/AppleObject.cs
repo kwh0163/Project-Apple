@@ -4,39 +4,38 @@ using UnityEngine;
 
 public class AppleObject : MonoBehaviour
 {
-    [SerializeField] private float gravity;
-    private Vector3 force;
+    public float temp;
     private Rigidbody rigid;
-    private bool isPrepare = true;
 
     private Vector3 defaultPosition;
+    private Quaternion defaultRotation;
 
     public void Initialize()
     {
         defaultPosition = transform.position;
-        force = new Vector3(0, gravity, 0);
+        defaultRotation = transform.rotation;
         rigid = GetComponent<Rigidbody>();
-        rigid.constraints = RigidbodyConstraints.FreezeAll;
+
+        ResetStage();
     }
+
+    public void AddForce(Vector3 direction)
+    {
+        rigid.AddForce(direction);
+    }
+
     public void PlayApple()
     {
-        isPrepare = false;
-        rigid.constraints = RigidbodyConstraints.FreezePositionZ;
+        rigid.useGravity = true;
+        rigid.constraints = RigidbodyConstraints.None;
     }
 
-    public void ChangePositionToDefault()
+    public void ResetStage()
     {
-        isPrepare = true;
+        rigid.useGravity = false;
         rigid.constraints = RigidbodyConstraints.FreezeAll;
+        transform.rotation = defaultRotation;
         transform.position = defaultPosition;
-    }
-
-    void FixedUpdate()
-    {
-        if (isPrepare)
-            return;
-        // 사용자 정의 중력을 적용
-        rigid.AddForce(force, ForceMode.Acceleration);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -48,9 +47,9 @@ public class AppleObject : MonoBehaviour
         else if (collision.collider.CompareTag("Newton"))
         {
             GameManager.Instance.Stage.EndStage();
-            NewtonObject newton = collision.collider.GetComponent<NewtonObject>();
+            NewtonObject newton = collision.collider.GetComponentInParent<NewtonObject>();
             newton.RigidFreezeNone();
-            newton.AddForce(rigid.velocity.normalized * 5f);
+            collision.collider.GetComponent<Rigidbody>().AddForce(rigid.velocity);
         }
     }
 }

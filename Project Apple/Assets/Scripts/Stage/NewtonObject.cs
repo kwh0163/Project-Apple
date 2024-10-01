@@ -4,21 +4,45 @@ using UnityEngine;
 
 public class NewtonObject : MonoBehaviour
 {
-    Rigidbody rigid;
+    Animator animator;
+    Rigidbody[] ragdollRigid;
+
+    Vector3 defaultPosition;
+    Quaternion defaultRotation;
+
     public void Initialize()
     {
-        rigid = GetComponent<Rigidbody>();
+        defaultPosition = transform.position;
+        defaultRotation = transform.rotation;
 
-        rigid.constraints = RigidbodyConstraints.FreezeAll;
+        animator = GetComponentInChildren<Animator>();
+        ragdollRigid = GetComponentsInChildren<Rigidbody>();
+
+        ResetStage();
     }
 
     public void RigidFreezeNone()
     {
-        rigid.constraints = RigidbodyConstraints.None;
+        animator.enabled = false;
+        SetRagdollRigid(false);
     }
 
-    public void AddForce(Vector3 force)
+
+    public void ResetStage()
     {
-        rigid.AddForce(force, ForceMode.Force);
+        animator.enabled = true;
+
+        SetRagdollRigid(true);
+
+        transform.position = defaultPosition;
+        transform.rotation = defaultRotation;
+    }
+    
+    public void SetRagdollRigid(bool state)
+    {
+        foreach(var ele in ragdollRigid)
+        {
+            ele.isKinematic = state;
+        }
     }
 }

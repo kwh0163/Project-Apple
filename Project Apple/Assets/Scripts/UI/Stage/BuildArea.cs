@@ -59,6 +59,14 @@ public class BuildArea : MonoBehaviour
             ChangeColor(copiedBlock.CheckIsContained(boxCollider));
         }
 
+        if (Input.GetKey(KeyCode.R))
+        {
+            if (Input.GetKey(KeyCode.LeftShift))
+                copiedBlock.transform.Rotate(0, 0, .5f);
+            else
+                copiedBlock.transform.Rotate(0, 0, -.5f);
+        }
+
     }
     private void OnMouseUp()
     {
@@ -67,7 +75,10 @@ public class BuildArea : MonoBehaviour
 
         isBlockMoving = false;
         if (copiedBlock.CheckIsContained(boxCollider))
+        {
             selectedBlock.MovePosition(copiedBlock.transform.position);
+            selectedBlock.ChangeRotation(copiedBlock.transform.rotation);
+        }
         Destroy(copiedBlock.gameObject);
         selectedBlock = null;
     }
@@ -75,7 +86,8 @@ public class BuildArea : MonoBehaviour
     void CopySelectedBlock()
     {
         copiedBlock = Instantiate(selectedBlock, selectedBlock.transform.position, selectedBlock.transform.rotation);
-        
+        copiedBlock.Initialize();
+
         copiedBlockRenderer = copiedBlock.GetComponent<Renderer>();
         copiedBlockRenderer.material = new Material(copiedBlockRenderer.material);
         Color color = copiedBlockRenderer.material.color;

@@ -14,17 +14,37 @@ public class StageManager : MonoBehaviour, IManager
     public AppleObject Apple { get; private set; }
     public NewtonObject Newton { get; private set; }
 
+    public List<Block> BlockList { get; private set; }
+
     StageState state;
 
     public void Initialize()
     {
         Apple = FindObjectOfType<AppleObject>();
         Newton = FindObjectOfType<NewtonObject>();
+        BlockList = new List<Block>();
+
+        foreach (var ele in FindObjectsOfType<Block>())
+        {
+            BlockList.Add(ele);
+            ele.Initialize();
+        }
 
         Apple.Initialize();
         Newton.Initialize();
 
         SetStage();
+    }
+
+    public void ResetStage()
+    {
+        state = StageState.Prepare;
+        Apple.ResetStage();
+        Newton.ResetStage();
+        foreach (var ele in BlockList)
+            ele.ResetStage();
+
+        GameManager.Instance.UI.Stage.Area.SetActice(true);
     }
 
     public void SetStage()
@@ -33,7 +53,11 @@ public class StageManager : MonoBehaviour, IManager
             return;
 
         state = StageState.Prepare;
-        Apple.ChangePositionToDefault();
+        Apple.ResetStage();
+        Newton.ResetStage();
+        foreach (var ele in BlockList)
+            ele.ResetStage();
+
         GameManager.Instance.UI.Stage.Area.SetActice(true);
     }
     
