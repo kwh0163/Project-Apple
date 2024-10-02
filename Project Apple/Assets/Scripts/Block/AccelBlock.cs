@@ -51,7 +51,7 @@ public class AccelBlock : Block
     private void SetLineRenderer()
     {
         line.SetPosition(0, transform.position);
-        line.SetPosition(1, transform.position + accelDirection.normalized * 3);
+        line.SetPosition(1, transform.position + accelDirection.normalized * 1.5f);
     }
 
 }

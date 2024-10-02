@@ -12,7 +12,7 @@ public class AppleObject : MonoBehaviour
 
     private Vector3 velocity;
     private bool isEnd = false;
-    private void FixedUpdate()
+    private void Update()
     {
         if (!isEnd)
             velocity = rigid.velocity;

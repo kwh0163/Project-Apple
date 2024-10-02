@@ -6,6 +6,7 @@ public class BuildArea : MonoBehaviour
 {
     [SerializeField] private float colliderSizeZ;
     [SerializeField] private float copiedBlockAlpha;
+    [SerializeField] private float changeAngleMult;
     RectTransform rectTransform;
     BoxCollider boxCollider;
 
@@ -62,9 +63,9 @@ public class BuildArea : MonoBehaviour
         if (Input.GetKey(KeyCode.R))
         {
             if (Input.GetKey(KeyCode.LeftShift))
-                copiedBlock.transform.Rotate(0, 0, .5f);
+                copiedBlock.transform.Rotate(0, 0, changeAngleMult * Time.deltaTime);
             else
-                copiedBlock.transform.Rotate(0, 0, -.5f);
+                copiedBlock.transform.Rotate(0, 0, -changeAngleMult * Time.deltaTime);
         }
 
     }
