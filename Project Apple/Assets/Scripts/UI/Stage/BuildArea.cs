@@ -60,12 +60,9 @@ public class BuildArea : MonoBehaviour
             ChangeColor(copiedBlock.CheckIsContained(boxCollider));
         }
 
-        if (Input.GetKey(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R))
         {
-            if (Input.GetKey(KeyCode.LeftShift))
-                copiedBlock.transform.Rotate(0, 0, changeAngleMult * Time.deltaTime);
-            else
-                copiedBlock.transform.Rotate(0, 0, -changeAngleMult * Time.deltaTime);
+            copiedBlock.FlipBlock();
         }
 
     }
@@ -78,7 +75,8 @@ public class BuildArea : MonoBehaviour
         if (copiedBlock.CheckIsContained(boxCollider))
         {
             selectedBlock.MovePosition(copiedBlock.transform.position);
-            selectedBlock.ChangeRotation(copiedBlock.transform.rotation);
+            if (copiedBlock.IsFlipped != selectedBlock.IsFlipped)
+                selectedBlock.FlipBlock();
         }
         Destroy(copiedBlock.gameObject);
         selectedBlock = null;

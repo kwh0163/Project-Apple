@@ -6,17 +6,10 @@ using UnityEngine;
 public class AppleObject : MonoBehaviour
 {
     private Rigidbody rigid;
+    public Rigidbody Rigid { get { return rigid; } }
 
     private Vector3 defaultPosition;
     private Quaternion defaultRotation;
-
-    private Vector3 velocity;
-    private bool isEnd = false;
-    private void Update()
-    {
-        if (!isEnd)
-            velocity = rigid.velocity;
-    }
 
     public void Initialize()
     {
@@ -27,9 +20,14 @@ public class AppleObject : MonoBehaviour
         ResetStage();
     }
 
-    public void AddForce(Vector3 direction)
+    public void SetVelocity(Vector3 vel)
     {
-        rigid.AddForce(direction);
+        rigid.velocity = vel;
+    }
+
+    public void AddForce(Vector3 direction, ForceMode force = ForceMode.Force)
+    {
+        rigid.AddForce(direction, force);
     }
 
     public void PlayApple()
@@ -40,11 +38,9 @@ public class AppleObject : MonoBehaviour
 
     public void ResetStage()
     {
-        isEnd = false;
         rigid.useGravity = false;
         rigid.constraints = RigidbodyConstraints.FreezeAll;
-        transform.rotation = defaultRotation;
-        transform.position = defaultPosition;
+        transform.SetPositionAndRotation(defaultPosition, defaultRotation);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -55,11 +51,10 @@ public class AppleObject : MonoBehaviour
         }
         else if (collision.collider.CompareTag("Newton"))
         {
-            isEnd = true;
             GameManager.Instance.Stage.EndStage();
             NewtonObject newton = collision.collider.GetComponentInParent<NewtonObject>();
             newton.RigidFreezeNone();
-            collision.collider.GetComponent<Rigidbody>().velocity = velocity;
+            collision.collider.GetComponent<Rigidbody>().velocity = rigid.velocity;
         }
     }
 }

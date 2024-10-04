@@ -3,44 +3,46 @@ using UnityEngine.Events;
 
 public class Block : MonoBehaviour
 {
-    private Collider collider;
+    [SerializeField] private bool isFlipped;
+    private Collider colliderComponent;
 
     Vector3 defaultPosition;
     Quaternion defaultRotation;
 
     public bool IsOverlapped { get; private set; }
-    protected UnityEvent<Collision> onAppleEnterEvent = new UnityEvent<Collision>();
-    protected UnityEvent<Collision> onAppleExitEvent = new UnityEvent<Collision>();
+    public bool IsFlipped { get { return isFlipped; } }
+    protected UnityEvent<Collision> onAppleEnterEvent = new();
+    protected UnityEvent<Collision> onAppleExitEvent = new();
 
     public virtual void Initialize()
     {
         defaultPosition = transform.position;
         defaultRotation = transform.rotation;
 
-        collider = GetComponent<Collider>();
+        colliderComponent = GetComponent<Collider>();
     }
 
+    public virtual void FlipBlock()
+    {
+        isFlipped = !isFlipped;
+        transform.Rotate(Vector3.up, 180, Space.World);
+    }
     public virtual void MovePosition(Vector3 pos)
     {
         transform.position = pos;
-    }
-    public virtual void ChangeRotation(Quaternion quaternion)
-    {
-        transform.rotation = quaternion;
     }
 
     public bool CheckIsContained(Collider targetCollider)
     {
         Bounds targetBounds = targetCollider.bounds;
-        Bounds objectBounds = collider.bounds;
+        Bounds objectBounds = colliderComponent.bounds;
 
         return (targetBounds.Contains(objectBounds.min) && targetBounds.Contains(objectBounds.max));
     }
 
     public virtual void ResetStage()
     {
-        transform.position = defaultPosition;
-        transform.rotation = defaultRotation;
+        transform.SetPositionAndRotation(defaultPosition, defaultRotation);
     }
 
     private void OnCollisionEnter(Collision collision)

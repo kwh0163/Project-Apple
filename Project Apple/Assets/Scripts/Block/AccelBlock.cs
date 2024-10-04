@@ -30,20 +30,21 @@ public class AccelBlock : Block
         base.ResetStage();
         SetAccelDirection();
     }
+    public override void FlipBlock()
+    {
+        base.FlipBlock();
+        SetAccelDirection();
+    }
     public override void MovePosition(Vector3 pos)
     {
         base.MovePosition(pos);
         SetAccelDirection();
     }
-    public override void ChangeRotation(Quaternion quaternion)
-    {
-        base.ChangeRotation(quaternion);
-        SetAccelDirection();
-    }
 
     private void SetAccelDirection() 
     {
-        accelDirection = Quaternion.AngleAxis(transform.eulerAngles.z, Vector3.forward) * Vector3.right;
+        accelDirection = IsFlipped ? Vector3.left : Vector3.right;
+        
         SetLineRenderer();
     }
 
