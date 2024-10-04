@@ -11,6 +11,14 @@ public class AppleObject : MonoBehaviour
     private Vector3 defaultPosition;
     private Quaternion defaultRotation;
 
+    private Vector3 velocity;
+    private bool isEnd = false;
+    private void Update()
+    {
+        if (!isEnd)
+            velocity = rigid.velocity;
+    }
+
     public void Initialize()
     {
         defaultPosition = transform.position;
@@ -38,6 +46,7 @@ public class AppleObject : MonoBehaviour
 
     public void ResetStage()
     {
+        isEnd = false;
         rigid.useGravity = false;
         rigid.constraints = RigidbodyConstraints.FreezeAll;
         transform.SetPositionAndRotation(defaultPosition, defaultRotation);
@@ -51,10 +60,11 @@ public class AppleObject : MonoBehaviour
         }
         else if (collision.collider.CompareTag("Newton"))
         {
+            isEnd = true;
             GameManager.Instance.Stage.EndStage();
             NewtonObject newton = collision.collider.GetComponentInParent<NewtonObject>();
             newton.RigidFreezeNone();
-            collision.collider.GetComponent<Rigidbody>().velocity = rigid.velocity;
+            collision.collider.GetComponent<Rigidbody>().velocity = velocity;
         }
     }
 }
