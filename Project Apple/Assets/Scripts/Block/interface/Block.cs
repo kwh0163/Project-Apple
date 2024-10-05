@@ -3,6 +3,8 @@ using UnityEngine.Events;
 
 public class Block : MonoBehaviour
 {
+    [SerializeField] private bool isStatic;
+    public bool IsStatic { get { return isStatic; } }
     [SerializeField] private bool isFlipped;
     private Collider colliderComponent;
 

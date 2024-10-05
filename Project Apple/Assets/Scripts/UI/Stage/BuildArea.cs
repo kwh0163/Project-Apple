@@ -39,6 +39,11 @@ public class BuildArea : MonoBehaviour
         {
             if (ele.collider.TryGetComponent(out selectedBlock))
             {
+                if (selectedBlock.IsStatic)
+                {
+                    selectedBlock = null;
+                    return;
+                }
                 isBlockMoving = true;
                 CopySelectedBlock();
                 break;

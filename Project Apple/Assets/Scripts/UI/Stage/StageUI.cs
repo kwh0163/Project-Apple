@@ -8,8 +8,14 @@ public class StageUI : MonoBehaviour
 
     public void Initialize()
     {
-        Area = GetComponentInChildren<BuildArea>();
+        Area = FindObjectOfType<BuildArea>();
 
         Area.Initialize();
+    }
+
+    public void SetActive(bool isActive)
+    {
+        Area.gameObject.SetActive(isActive);
+        gameObject.SetActive(isActive);
     }
 }

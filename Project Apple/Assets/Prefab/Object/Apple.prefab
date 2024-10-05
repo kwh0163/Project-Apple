@@ -13,9 +13,11 @@ GameObject:
   - component: {fileID: 7832019836189918563}
   - component: {fileID: 2033948785641158738}
   - component: {fileID: 19427283288201908}
-  m_Layer: 0
+  - component: {fileID: 335407285311662929}
+  - component: {fileID: 3246886310274393512}
+  m_Layer: 7
   m_Name: Apple
-  m_TagString: Untagged
+  m_TagString: Apple
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28,7 +30,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1335030467915447688}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 5, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
@@ -92,7 +94,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1335030467915447688}
-  m_Material: {fileID: 13400000, guid: 2da6decf6b919dc458680766b431d33c, type: 2}
+  m_Material: {fileID: 13400000, guid: 983c0ee79f18fcd439fad849f6a0c5b4, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -131,5 +133,29 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 8
+  m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &335407285311662929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335030467915447688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15877a4a7a52af54ea1cc7b5b70cc661, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3246886310274393512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335030467915447688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15877a4a7a52af54ea1cc7b5b70cc661, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

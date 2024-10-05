@@ -34,8 +34,7 @@ public class NewtonObject : MonoBehaviour
 
         SetRagdollRigid(true);
 
-        transform.position = defaultPosition;
-        transform.rotation = defaultRotation;
+        transform.SetPositionAndRotation(defaultPosition, defaultRotation);
     }
     
     public void SetRagdollRigid(bool state)

@@ -45,14 +45,6 @@ public class AccelBlock : Block
     {
         accelDirection = IsFlipped ? Vector3.left : Vector3.right;
         
-        SetLineRenderer();
-    }
-
-    public LineRenderer line;
-    private void SetLineRenderer()
-    {
-        line.SetPosition(0, transform.position);
-        line.SetPosition(1, transform.position + accelDirection.normalized * 1.5f);
     }
 
 }

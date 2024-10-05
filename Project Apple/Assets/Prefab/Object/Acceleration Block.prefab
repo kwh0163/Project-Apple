@@ -119,8 +119,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 084c068eb9beb764e94f8ce107c24bc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isStatic: 0
+  isFlipped: 0
   power: 300
-  line: {fileID: 6361347418557427043}
 --- !u!120 &6361347418557427043
 LineRenderer:
   serializedVersion: 2
@@ -165,7 +166,7 @@ LineRenderer:
   m_SortingOrder: 0
   m_Positions:
   - {x: 0, y: 0, z: 0}
-  - {x: 1.5, y: 0, z: 0}
+  - {x: 1, y: 0, z: 0}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.2
@@ -222,6 +223,6 @@ LineRenderer:
     shadowBias: 0.5
     generateLightingData: 0
   m_MaskInteraction: 0
-  m_UseWorldSpace: 1
+  m_UseWorldSpace: 0
   m_Loop: 0
   m_ApplyActiveColorSpace: 1

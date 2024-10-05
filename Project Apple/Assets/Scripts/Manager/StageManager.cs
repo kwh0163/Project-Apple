@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-enum StageState
+public enum StageState
 {
     Prepare,
     Play,
@@ -11,71 +11,75 @@ enum StageState
 
 public class StageManager : MonoBehaviour, IManager
 {
-    public AppleObject Apple { get; private set; }
-    public NewtonObject Newton { get; private set; }
+    [SerializeField] private Transform stageRootTransform;
 
-    public List<Block> BlockList { get; private set; }
+    public ObjectManager StageObject { get; private set; }
+    public StageListManager StageList { get; private set; }
 
-    StageState state;
+    public StageState CurrentState;
 
     public void Initialize()
     {
-        Apple = FindObjectOfType<AppleObject>();
-        Newton = FindObjectOfType<NewtonObject>();
-        BlockList = new List<Block>();
-
-        foreach (var ele in FindObjectsOfType<Block>())
-        {
-            BlockList.Add(ele);
-            ele.Initialize();
-        }
-
-        Apple.Initialize();
-        Newton.Initialize();
-
-        SetStage();
+        StageList = GetComponent<StageListManager>();
+        StageObject = GetComponent<ObjectManager>();
     }
 
     public void ResetStage()
     {
-        state = StageState.Prepare;
-        Apple.ResetStage();
-        Newton.ResetStage();
-        foreach (var ele in BlockList)
-            ele.ResetStage();
+        CurrentState = StageState.Prepare;
+
+        StageObject.ResetObject();
 
         GameManager.Instance.UI.Stage.Area.SetActice(true);
     }
 
     public void SetStage()
     {
-        if (state == StageState.End)
+        if (CurrentState == StageState.End)
             return;
 
-        state = StageState.Prepare;
-        Apple.ResetStage();
-        Newton.ResetStage();
-        foreach (var ele in BlockList)
-            ele.ResetStage();
+        CurrentState = StageState.Prepare;
+        StageObject.ResetObject();
 
         GameManager.Instance.UI.Stage.Area.SetActice(true);
     }
-    
+
     public void PlayStage()
     {
-        if (state == StageState.End)
+        if (CurrentState == StageState.End)
             return;
 
-        if (state == StageState.Play)
+        if (CurrentState == StageState.Play)
             return;
-        state = StageState.Play;
+        CurrentState = StageState.Play;
         GameManager.Instance.UI.Stage.Area.SetActice(false);
-        Apple.PlayApple();
+
+        StageObject.PlayApple();
 
     }
 
     public void EndStage()
     {
-        state = StageState.End;
+        CurrentState = StageState.End;
+    }
+
+    public void InstantiateMenuStage()
+    {
+        if(stageRootTransform.childCount > 0)
+            Destroy(stageRootTransform.GetChild(0).gameObject);
+
+        Instantiate(StageList.MainStage, stageRootTransform);
+
+        StageObject.Initialize();
+    }
+
+    public void InstantiateStage(int stageNumber)
+    {
+        if (stageRootTransform.childCount > 0)
+            Destroy(stageRootTransform.GetChild(0).gameObject);
+
+        Instantiate(StageList.GetStage(stageNumber), stageRootTransform);
+
+        StageObject.Initialize();
     }
 }
