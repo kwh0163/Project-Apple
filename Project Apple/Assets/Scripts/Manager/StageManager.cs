@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class StageManager : MonoBehaviour, IManager
@@ -78,5 +79,10 @@ public class StageManager : MonoBehaviour, IManager
 
         StageObject.Initialize(stage);
 
+    }
+    public void OnExitButton()
+    {
+        ResetStage();
+        GameManager.Instance.GoToMainMenu();
     }
 }
