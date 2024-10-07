@@ -54,11 +54,7 @@ public class AppleObject : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.CompareTag("Floor"))
-        {
-            GameManager.Instance.Stage.SetStage();
-        }
-        else if (collision.collider.CompareTag("Newton"))
+        if (collision.collider.CompareTag("Newton"))
         {
             isEnd = true;
             GameManager.Instance.Stage.EndStage();

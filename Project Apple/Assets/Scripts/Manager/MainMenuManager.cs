@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MainMenuManager : MonoBehaviour
 {
-    
+    private Coroutine currentCoroutine;
     public void Initialize()
     {
 
@@ -13,7 +13,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void StartMenu()
     {
-        StartCoroutine(PlayApple());
+        currentCoroutine = StartCoroutine(PlayApple());
     }
 
     IEnumerator PlayApple()
@@ -23,9 +23,12 @@ public class MainMenuManager : MonoBehaviour
         GameManager.Instance.Stage.StageObject.PlayApple();
         yield return new WaitUntil(() => GameManager.Instance.Stage.CurrentState == StageState.End);
         yield return new WaitForSeconds(5f);
-        StartCoroutine(PlayApple());
+        currentCoroutine = StartCoroutine(PlayApple());
         yield return null;
     }
 
-
+    public void StopCoroutine()
+    {
+        StopCoroutine(currentCoroutine);
+    }
 }

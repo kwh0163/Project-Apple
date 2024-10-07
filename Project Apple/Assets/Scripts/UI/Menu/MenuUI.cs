@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class MenuUI : MonoBehaviour
 {
-    CustomButton[] buttons;
+    public StageSelect Stage { get; private set; }
     public void Initialize()
     {
-        buttons = GetComponentsInChildren<CustomButton>();
-        foreach (var ele in buttons)
-            ele.Initialize();
+        Stage = GetComponent<StageSelect>();
+        Stage.Initialize();
+        Stage.CloseWindow();
     }
 
     public void SetActice(bool isActive)

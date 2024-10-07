@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -20,11 +21,11 @@ public class GameManager : MonoBehaviour
 
     void Initialize()
     {
-        UI = GetComponentInChildren<UIManager>();
-        UI.Initialize();
-
         Stage = GetComponentInChildren<StageManager>();
         Stage.Initialize();
+
+        UI = GetComponentInChildren<UIManager>();
+        UI.Initialize();
 
         Menu = GetComponentInChildren<MainMenuManager>();
         Menu.Initialize();
@@ -32,10 +33,21 @@ public class GameManager : MonoBehaviour
         GoToMainMenu();
     }
 
+    public void StartStage(int stageNumber)
+    {
+        Menu.StopCoroutine();
+        UI.Menu.SetActice(false);
+        UI.Stage.SetActive(true);
+        UI.Stage.Select.SetImages(Stage.StageList.BlockList[stageNumber]);
+        Stage.InstantiateStage(stageNumber);
+    }
+
     public void GoToMainMenu()
     {
+        UI.Stage.SetActive(false);
         Stage.InstantiateMenuStage();
         Menu.StartMenu();
+        UI.Menu.SetActice(true);
     }
 
     public void Quit()

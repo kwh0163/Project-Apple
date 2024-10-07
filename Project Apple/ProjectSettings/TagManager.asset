@@ -8,6 +8,7 @@ TagManager:
   - Apple
   - Newton
   - Floor
+  - BlockImage
   layers:
   - Default
   - TransparentFX

@@ -7,8 +7,11 @@ public class BuildArea : MonoBehaviour
     [SerializeField] private float colliderSizeZ;
     [SerializeField] private float copiedBlockAlpha;
     [SerializeField] private float changeAngleMult;
+    [SerializeField] RectTransform scrollview;
     RectTransform rectTransform;
     BoxCollider boxCollider;
+
+    Block blockPrefab;
 
     Block selectedBlock;
     Block copiedBlock;
@@ -24,12 +27,22 @@ public class BuildArea : MonoBehaviour
         boxCollider.size = new Vector3(rectTransform.rect.width, rectTransform.rect.height, colliderSizeZ);
     }
 
-    public void SetActice(bool isActive)
+    private void Update()
+    {
+        if (isBlockMoving)
+            MoveBlock();
+        if (Input.GetMouseButtonDown(0))
+            SelectBlock();
+        if (Input.GetMouseButtonUp(0))
+            SetBlockAsCopied();
+        
+    }
+    public void SetActive(bool isActive)
     {
         gameObject.SetActive(isActive);
     }
 
-    private void OnMouseDown()
+    private void SelectBlock()
     {
         if (isBlockMoving)
             return;
@@ -44,16 +57,22 @@ public class BuildArea : MonoBehaviour
                     selectedBlock = null;
                     return;
                 }
-                isBlockMoving = true;
-                CopySelectedBlock();
+                CopySelectedBlock(selectedBlock);
                 break;
             }
         }
     }
-    private void OnMouseDrag()
+    private void MoveBlock()
     {
-        if (selectedBlock == null)
+
+        if (Input.mousePosition.y <= scrollview.rect.height)
+        {
+            copiedBlock.gameObject.SetActive(false);
             return;
+        }
+        else
+            copiedBlock.gameObject.SetActive(true);
+
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -62,7 +81,7 @@ public class BuildArea : MonoBehaviour
             Vector3 nextPos = hit.point;
             nextPos.z = 0;
             copiedBlock.MovePosition(nextPos);
-            ChangeColor(copiedBlock.CheckIsContained(boxCollider));
+            ChangeColor(copiedBlock.CheckIsContained(boxCollider) && !copiedBlock.IsOverlapped);
         }
 
         if (Input.GetKeyDown(KeyCode.R))
@@ -71,25 +90,13 @@ public class BuildArea : MonoBehaviour
         }
 
     }
-    private void OnMouseUp()
+
+    public void CopySelectedBlock(Block block)
     {
         if (selectedBlock == null)
-            return;
-
-        isBlockMoving = false;
-        if (copiedBlock.CheckIsContained(boxCollider))
-        {
-            selectedBlock.MovePosition(copiedBlock.transform.position);
-            if (copiedBlock.IsFlipped != selectedBlock.IsFlipped)
-                selectedBlock.FlipBlock();
-        }
-        Destroy(copiedBlock.gameObject);
-        selectedBlock = null;
-    }
-
-    void CopySelectedBlock()
-    {
-        copiedBlock = Instantiate(selectedBlock, selectedBlock.transform.position, selectedBlock.transform.rotation);
+            blockPrefab = block;
+        isBlockMoving = true;
+        copiedBlock = Instantiate(block, block.transform.position, block.transform.rotation);
         copiedBlock.Initialize();
 
         copiedBlockRenderer = copiedBlock.GetComponent<Renderer>();
@@ -99,6 +106,36 @@ public class BuildArea : MonoBehaviour
         copiedBlockRenderer.material.color = color;
 
         MakeMaterialTransparent(copiedBlockRenderer.material);
+    }
+    void SetBlockAsCopied()
+    {
+        if (copiedBlock == null)
+            return;
+
+        if (Input.mousePosition.y <= scrollview.rect.height)
+        {
+            GameManager.Instance.UI.Stage.Select.RemoveBlock(copiedBlock.Type);
+            if (selectedBlock != null)
+            {
+                Destroy(selectedBlock.gameObject);
+                GameManager.Instance.Stage.StageObject.SpareBlock.Remove(selectedBlock);
+            }
+        }
+        else if (copiedBlock.CheckIsContained(boxCollider) && !copiedBlock.IsOverlapped)
+        {
+            Block temp;
+            if(selectedBlock == null)
+                temp = Instantiate(blockPrefab, GameManager.Instance.Stage.BlockParentTransform).GetComponent<Block>();
+            else
+                temp = selectedBlock;
+            temp.MovePosition(copiedBlock.transform.position);
+            if (copiedBlock.IsFlipped != temp.IsFlipped)
+                temp.FlipBlock();
+            GameManager.Instance.Stage.StageObject.SpareBlock.Add(temp);
+        }
+        Destroy(copiedBlock.gameObject);
+        isBlockMoving = false;
+        selectedBlock = null;
     }
 
     void ChangeColor(bool isAble)

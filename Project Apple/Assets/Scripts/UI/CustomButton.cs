@@ -10,20 +10,24 @@ public class CustomButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     Sprite defaultSprite;
     
     private Image image;
+    private Button button;
 
     public void Initialize()
     {
         image = GetComponent<Image>();
+        button = GetComponent<Button>();
         defaultSprite = image.sprite;
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        image.sprite = clickedSprite;
+        if(button.interactable)
+            image.sprite = clickedSprite;
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        image.sprite = defaultSprite;
+        if(button.interactable)
+            image.sprite = defaultSprite;
     }
 }

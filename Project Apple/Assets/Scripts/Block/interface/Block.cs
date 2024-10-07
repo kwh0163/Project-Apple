@@ -7,6 +7,8 @@ public class Block : MonoBehaviour
     public bool IsStatic { get { return isStatic; } }
     [SerializeField] private bool isFlipped;
     private Collider colliderComponent;
+    [SerializeField] private BlockType blockType;
+    public BlockType Type { get { return blockType; } }
 
     Vector3 defaultPosition;
     Quaternion defaultRotation;
