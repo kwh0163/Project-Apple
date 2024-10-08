@@ -6,26 +6,26 @@ public class StageListManager : MonoBehaviour
 {
     [SerializeField] private GameObject mainStage;
     public GameObject MainStage { get { return mainStage; } }
-
-    [SerializeField] private List<GameObject> stageList;
-    public List<GameObject> StageList { get { return stageList; } }
-    [SerializeField] private List<StageBlockData> blockDataList;
-    public List<StageBlockData> BlockList { get { return blockDataList; } }
-    [SerializeField] private List<bool> isStageClear = new ();
-
+    [SerializeField] private List<StageData> stageData;
+    public int StageCount { get { return stageData.Count; } }
+    public StageData GetStageData(int stageNumber)
+    {
+        if (stageNumber >= stageData.Count)
+            return stageData[stageNumber - 1];
+        return stageData[stageNumber];
+    }
     public void Initialize()
     {
-        isStageClear[0] = true;
-        for (int i = 1; i < isStageClear.Count; i++)
-            isStageClear[i] = false;
+        stageData[0].isStageUnlocked = true;
+        for (int i = 1; i < stageData.Count; i++)
+            stageData[i].isStageUnlocked = false;
     }
-
-    public GameObject GetStage(int stageNumber)
+    public void ClearStage(int currentStageNumber)
     {
-        return stageList[stageNumber];
-    }
-    public bool IsStageClear(int stageNumber)
-    {
-        return isStageClear[stageNumber];
+        stageData[currentStageNumber].isStageCleared = true;
+        if(stageData.Count > currentStageNumber + 1)
+        {
+            stageData[currentStageNumber + 1].isStageUnlocked = true;
+        }
     }
 }

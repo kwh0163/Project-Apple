@@ -11,6 +11,8 @@ public class StageManager : MonoBehaviour, IManager
     public StageState CurrentState;
     public Transform BlockParentTransform { get; private set; }
 
+    int currentStageNumber;
+
     public void Initialize()
     {
         StageList = GetComponent<StageListManager>();
@@ -35,6 +37,7 @@ public class StageManager : MonoBehaviour, IManager
         CurrentState = StageState.Prepare;
         StageObject.ResetObject();
 
+        GameManager.Instance.UI.Stage.Clear.Close();
         GameManager.Instance.UI.Stage.Area.SetActive(true);
     }
 
@@ -55,6 +58,8 @@ public class StageManager : MonoBehaviour, IManager
     public void EndStage()
     {
         CurrentState = StageState.End;
+        StageList.ClearStage(currentStageNumber);
+        GameManager.Instance.UI.Stage.Clear.Open();
     }
     public void InstantiateMenuStage()
     {
@@ -69,11 +74,14 @@ public class StageManager : MonoBehaviour, IManager
 
     public void InstantiateStage(int stageNumber)
     {
+        currentStageNumber = stageNumber;
+
         CurrentState = StageState.Prepare;
+
         if (stageRootTransform.childCount > 0)
             Destroy(stageRootTransform.GetChild(0).gameObject);
 
-        GameObject stage = Instantiate(StageList.GetStage(stageNumber), stageRootTransform);
+        GameObject stage = Instantiate(StageList.GetStageData(currentStageNumber).StagePrefab, stageRootTransform);
 
         BlockParentTransform = stage.transform;
 
@@ -84,5 +92,9 @@ public class StageManager : MonoBehaviour, IManager
     {
         ResetStage();
         GameManager.Instance.GoToMainMenu();
+    }
+    public void OnNextButton()
+    {
+        GameManager.Instance.StartStage(currentStageNumber + 1);
     }
 }

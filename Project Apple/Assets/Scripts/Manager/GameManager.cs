@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
         Menu.StopCoroutine();
         UI.Menu.SetActice(false);
         UI.Stage.SetActive(true);
-        UI.Stage.Select.SetImages(Stage.StageList.BlockList[stageNumber]);
+        UI.Stage.Select.SetImages(Stage.StageList.GetStageData(stageNumber));
         Stage.InstantiateStage(stageNumber);
     }
 

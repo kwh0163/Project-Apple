@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1313788888093657131}
   - component: {fileID: 6826601008647272250}
   - component: {fileID: 7863134399687913930}
+  - component: {fileID: 6890430741512522399}
   m_Layer: 7
   m_Name: UnMoveable Block
   m_TagString: Block
@@ -27,13 +28,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3895688878265154641}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.38268343, w: 0.92387956}
   m_LocalPosition: {x: 0, y: 1.58, z: 0}
-  m_LocalScale: {x: 3.54, y: 0.3, z: 1}
+  m_LocalScale: {x: 1.7, y: 0.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 45}
 --- !u!33 &1313788888093657131
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -105,3 +106,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6890430741512522399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3895688878265154641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8b6c5c168f1cb1458db44dd9d9b3bb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isStatic: 1
+  isFlipped: 0
+  blockType: 0

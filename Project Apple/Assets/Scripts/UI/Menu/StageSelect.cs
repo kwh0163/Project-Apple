@@ -45,7 +45,7 @@ public class StageSelect : MonoBehaviour
 
     void ResetStage()
     {
-        int maxPage = GameManager.Instance.Stage.StageList.StageList.Count / countsInPage;
+        int maxPage = GameManager.Instance.Stage.StageList.StageCount / countsInPage;
         
         prevButton.interactable = currentPage != 0;
         nextButton.interactable = currentPage != maxPage;
@@ -53,14 +53,14 @@ public class StageSelect : MonoBehaviour
         {
             int currentIndex = currentPage * countsInPage + i;
             stageButtons[i].SetText((currentIndex + 1).ToString());
-            if (currentIndex >= GameManager.Instance.Stage.StageList.StageList.Count)
+            if (currentIndex >= GameManager.Instance.Stage.StageList.StageCount)
             {
                 stageButtons[i].gameObject.SetActive(false);
                 continue;
             }
             else
                 stageButtons[i].gameObject.SetActive(true);
-            if (GameManager.Instance.Stage.StageList.IsStageClear(currentIndex))
+            if (GameManager.Instance.Stage.StageList.GetStageData(currentIndex).isStageUnlocked)
                 stageButtons[i].UnLock();
             else
                 stageButtons[i].Lock();

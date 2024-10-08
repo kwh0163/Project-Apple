@@ -17,7 +17,7 @@ public class BlockSelect : MonoBehaviour
 
     private Dictionary<BlockType, BlockImage> blockImages;
 
-    StageBlockData currentData;
+    StageData currentData;
 
     bool isOpening = false;
     bool isOpened = true;
@@ -44,7 +44,7 @@ public class BlockSelect : MonoBehaviour
     {
         blockImages[block].AddBlock();
     }
-    public void SetImages(StageBlockData blockData)
+    public void SetImages(StageData blockData)
     {
         currentData = blockData;
         foreach (var ele in blockValue)
@@ -58,10 +58,10 @@ public class BlockSelect : MonoBehaviour
         buttonRect.rotation = Quaternion.Euler(buttonImageDefaultRotation);
         isOpened = true;
         isOpening = false;
-        foreach (var ele in blockValue)
-            ele.ResetImage();
-        foreach(var ele in currentData.BlockData)
-            blockImages[ele].AddBlock();
+    //    foreach (var ele in blockValue)
+    //        ele.ResetImage();
+    //    foreach(var ele in currentData.BlockData)
+    //        blockImages[ele].AddBlock();
     }
     public void SetActive(bool isActive)
     {

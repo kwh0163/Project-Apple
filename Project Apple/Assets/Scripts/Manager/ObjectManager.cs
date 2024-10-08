@@ -48,9 +48,6 @@ public class ObjectManager : MonoBehaviour
             ele.ResetStage();
         foreach (var ele in BlockList)
             ele.ResetStage();
-        foreach (var ele in SpareBlock)
-            Destroy(ele.gameObject);
-        SpareBlock.Clear();
     }
     public void PlayApple()
     {

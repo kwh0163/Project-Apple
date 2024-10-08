@@ -29,6 +29,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void StopCoroutine()
     {
-        StopCoroutine(currentCoroutine);
+        if(currentCoroutine != null)
+            StopCoroutine(currentCoroutine);
     }
 }
