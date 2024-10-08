@@ -128,6 +128,7 @@ public class BuildArea : MonoBehaviour
                 temp = Instantiate(blockPrefab, GameManager.Instance.Stage.BlockParentTransform).GetComponent<Block>();
             else
                 temp = selectedBlock;
+            temp.Initialize();
             temp.MovePosition(copiedBlock.transform.position);
             if (copiedBlock.IsFlipped != temp.IsFlipped)
                 temp.FlipBlock();

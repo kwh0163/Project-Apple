@@ -11,6 +11,7 @@ public class StageManager : MonoBehaviour, IManager
     public StageState CurrentState;
     public Transform BlockParentTransform { get; private set; }
 
+    bool isMenu;
     int currentStageNumber;
 
     public void Initialize()
@@ -58,12 +59,14 @@ public class StageManager : MonoBehaviour, IManager
     public void EndStage()
     {
         CurrentState = StageState.End;
+        if (isMenu)
+            return;
         StageList.ClearStage(currentStageNumber);
         GameManager.Instance.UI.Stage.Clear.Open();
     }
     public void InstantiateMenuStage()
     {
-        CurrentState = StageState.Play;
+        isMenu = true;
         if(stageRootTransform.childCount > 0)
             Destroy(stageRootTransform.GetChild(0).gameObject);
 
@@ -74,6 +77,7 @@ public class StageManager : MonoBehaviour, IManager
 
     public void InstantiateStage(int stageNumber)
     {
+        isMenu = false;
         currentStageNumber = stageNumber;
 
         CurrentState = StageState.Prepare;

@@ -56,6 +56,8 @@ public class AppleObject : MonoBehaviour
     {
         if (collision.collider.CompareTag("Newton"))
         {
+            if (isEnd)
+                return;
             isEnd = true;
             GameManager.Instance.Stage.EndStage();
             NewtonObject newton = collision.collider.GetComponentInParent<NewtonObject>();

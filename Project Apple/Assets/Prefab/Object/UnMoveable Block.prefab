@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 1313788888093657131}
   - component: {fileID: 6826601008647272250}
   - component: {fileID: 7863134399687913930}
-  - component: {fileID: 6890430741512522399}
+  - component: {fileID: 8283891386276804531}
+  - component: {fileID: -1616459481372953090}
   m_Layer: 7
   m_Name: UnMoveable Block
   m_TagString: Block
@@ -106,7 +107,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6890430741512522399
+--- !u!114 &8283891386276804531
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -121,3 +122,24 @@ MonoBehaviour:
   isStatic: 1
   isFlipped: 0
   blockType: 0
+--- !u!65 &-1616459481372953090
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3895688878265154641}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}

@@ -28,4 +28,9 @@ public class StageListManager : MonoBehaviour
             stageData[currentStageNumber + 1].isStageUnlocked = true;
         }
     }
+    public void UnlockStage(int stageNumber)
+    {
+        if (stageNumber <= stageData.Count)
+            stageData[stageNumber - 1].isStageUnlocked = true;
+    }
 }

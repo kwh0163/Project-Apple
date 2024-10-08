@@ -1,5 +1,6 @@
 public enum StageState
 {
+    Menu,
     Prepare,
     Play,
     End

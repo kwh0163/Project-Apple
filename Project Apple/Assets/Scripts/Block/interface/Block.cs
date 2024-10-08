@@ -51,7 +51,8 @@ public class Block : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Block"))
+        Debug.Log("overlap");
+        if (collision.collider.CompareTag("Block"))
         {
             IsOverlapped = true;
         }
