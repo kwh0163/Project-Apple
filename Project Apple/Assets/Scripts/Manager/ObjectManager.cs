@@ -7,7 +7,6 @@ public class ObjectManager : MonoBehaviour
     public List<AppleObject> AppleList { get; private set; }
     public NewtonObject Newton { get; private set; }
     public List<Block> BlockList { get; private set; }
-    public List<Block> SpareBlock { get; private set; }
 
     public void Initialize(GameObject root)
     {
@@ -19,10 +18,6 @@ public class ObjectManager : MonoBehaviour
             BlockList = new List<Block>();
         else
             BlockList.Clear();
-        if (SpareBlock == null)
-            SpareBlock = new List<Block>();
-        else
-            SpareBlock.Clear();
 
         Newton = root.GetComponentInChildren<NewtonObject>();
         var apples = root.GetComponentsInChildren<AppleObject>();

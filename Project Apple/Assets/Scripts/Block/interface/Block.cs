@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -17,6 +18,8 @@ public class Block : MonoBehaviour
     public bool IsFlipped { get { return isFlipped; } }
     protected UnityEvent<Collision> onAppleEnterEvent = new();
     protected UnityEvent<Collision> onAppleExitEvent = new();
+
+    private List<GameObject> overlapBlocks = new();
 
     public virtual void Initialize()
     {
@@ -51,10 +54,10 @@ public class Block : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("overlap");
         if (collision.collider.CompareTag("Block"))
         {
-            IsOverlapped = true;
+            if (!overlapBlocks.Contains(collision.gameObject))
+                overlapBlocks.Add(collision.gameObject);
         }
         if (collision.collider.CompareTag("Apple"))
         {
@@ -65,11 +68,23 @@ public class Block : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Block"))
         {
-            IsOverlapped = false;
+            if (overlapBlocks.Contains(collision.gameObject))
+                overlapBlocks.Remove(collision.gameObject);
         }
         if (collision.collider.CompareTag("Apple"))
         {
             onAppleExitEvent.Invoke(collision);
         }
+    }
+    public bool CheckOverlapped(GameObject ignoreObject)
+    {
+        for(int i = 0; i < overlapBlocks.Count; i++)
+        {
+            if (ignoreObject != null && overlapBlocks[i] == ignoreObject)
+                continue;
+            else
+                return true;
+        }
+        return false;
     }
 }

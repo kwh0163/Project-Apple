@@ -81,7 +81,7 @@ public class BuildArea : MonoBehaviour
             Vector3 nextPos = hit.point;
             nextPos.z = 0;
             copiedBlock.MovePosition(nextPos);
-            ChangeColor(copiedBlock.CheckIsContained(boxCollider) && !copiedBlock.IsOverlapped);
+            ChangeColor(copiedBlock.CheckIsContained(boxCollider) && !copiedBlock.CheckOverlapped(selectedBlock?.gameObject));
         }
 
         if (Input.GetKeyDown(KeyCode.R))
@@ -118,10 +118,9 @@ public class BuildArea : MonoBehaviour
             if (selectedBlock != null)
             {
                 Destroy(selectedBlock.gameObject);
-                GameManager.Instance.Stage.StageObject.SpareBlock.Remove(selectedBlock);
             }
         }
-        else if (copiedBlock.CheckIsContained(boxCollider) && !copiedBlock.IsOverlapped)
+        else if (copiedBlock.CheckIsContained(boxCollider) && !copiedBlock.CheckOverlapped(selectedBlock?.gameObject))
         {
             Block temp;
             if(selectedBlock == null)
@@ -132,7 +131,10 @@ public class BuildArea : MonoBehaviour
             temp.MovePosition(copiedBlock.transform.position);
             if (copiedBlock.IsFlipped != temp.IsFlipped)
                 temp.FlipBlock();
-            GameManager.Instance.Stage.StageObject.SpareBlock.Add(temp);
+        }
+        else if(selectedBlock == null)
+        {
+            GameManager.Instance.UI.Stage.Select.RemoveBlock(copiedBlock.Type);
         }
         Destroy(copiedBlock.gameObject);
         isBlockMoving = false;
