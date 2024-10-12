@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class StageListManager : MonoBehaviour
 {
-    [SerializeField] private GameObject mainStage;
-    public GameObject MainStage { get { return mainStage; } }
+    [SerializeField] private GameObject menuStage;
+    public GameObject MenuStage { get { return menuStage; } }
     [SerializeField] private List<StageData> stageData;
     public int StageCount { get { return stageData.Count; } }
     public StageData GetStageData(int stageNumber)

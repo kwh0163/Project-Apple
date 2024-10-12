@@ -5,6 +5,7 @@ using UnityEngine;
 public class StageUI : MonoBehaviour
 {
     [SerializeField] private GameObject startButton;
+    [SerializeField] private GameObject resetButton;
     public BuildArea Area { get; private set; }
     public BlockSelect Select { get; private set; }
 
@@ -27,20 +28,16 @@ public class StageUI : MonoBehaviour
         Select.SetActive(isActive);
         gameObject.SetActive(isActive);
         startButton.SetActive(isActive);
+        resetButton.SetActive(isActive);
         Clear.Close();
     }
     public void PlayStage()
     {
         startButton.SetActive(false);
-        Area.gameObject.SetActive(false);
         Select.SetActive(false);
     }
-    public void ResetGame()
+    public void EndStage()
     {
-        startButton.SetActive(true);
-        Area.gameObject.SetActive(true);
-        Select.SetActive(true);
-        Select.ResetImages();
-        Clear.Close();
+        resetButton.SetActive(false);
     }
 }

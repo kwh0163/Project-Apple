@@ -6,10 +6,14 @@ public class Block : MonoBehaviour
 {
     [SerializeField] private bool isStatic;
     public bool IsStatic { get { return isStatic; } }
+
     [SerializeField] private bool isFlipped;
-    private Collider colliderComponent;
+    public Collider Collider { get; private set; }
+
     [SerializeField] private BlockType blockType;
     public BlockType Type { get { return blockType; } }
+
+    public Rigidbody Rigid { get; private set; }
 
     Vector3 defaultPosition;
     Quaternion defaultRotation;
@@ -25,8 +29,12 @@ public class Block : MonoBehaviour
     {
         defaultPosition = transform.position;
         defaultRotation = transform.rotation;
+        onAppleEnterEvent.RemoveAllListeners();
+        onAppleExitEvent.RemoveAllListeners();
 
-        colliderComponent = GetComponent<Collider>();
+        Collider = GetComponent<Collider>();
+
+        Rigid = GetComponent<Rigidbody>();
     }
 
     public virtual void FlipBlock()
@@ -39,41 +47,32 @@ public class Block : MonoBehaviour
         transform.position = pos;
     }
 
-    public bool CheckIsContained(Collider targetCollider)
-    {
-        Bounds targetBounds = targetCollider.bounds;
-        Bounds objectBounds = colliderComponent.bounds;
-
-        return (targetBounds.Contains(objectBounds.min) && targetBounds.Contains(objectBounds.max));
-    }
-
     public virtual void ResetStage()
     {
         transform.SetPositionAndRotation(defaultPosition, defaultRotation);
+        Rigid.isKinematic = false;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.CompareTag("Block"))
-        {
+        if (GameManager.Instance.Stage.CurrentState == StageState.Prepare)
             if (!overlapBlocks.Contains(collision.gameObject))
                 overlapBlocks.Add(collision.gameObject);
-        }
         if (collision.collider.CompareTag("Apple"))
         {
-            onAppleEnterEvent.Invoke(collision);
+            if (GameManager.Instance.Stage.CurrentState == StageState.Play)
+                onAppleEnterEvent.Invoke(collision);
         }
     }
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Block"))
-        {
+        if (GameManager.Instance.Stage.CurrentState == StageState.Prepare)
             if (overlapBlocks.Contains(collision.gameObject))
                 overlapBlocks.Remove(collision.gameObject);
-        }
         if (collision.collider.CompareTag("Apple"))
         {
-            onAppleExitEvent.Invoke(collision);
+            if (GameManager.Instance.Stage.CurrentState == StageState.Play)
+                onAppleExitEvent.Invoke(collision);
         }
     }
     public bool CheckOverlapped(GameObject ignoreObject)
@@ -86,5 +85,10 @@ public class Block : MonoBehaviour
                 return true;
         }
         return false;
+    }
+
+    protected virtual void OnDestroy()
+    {
+        
     }
 }

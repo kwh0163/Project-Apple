@@ -7,17 +7,24 @@ public class ObjectManager : MonoBehaviour
     public List<AppleObject> AppleList { get; private set; }
     public NewtonObject Newton { get; private set; }
     public List<Block> BlockList { get; private set; }
+    public List<BuildAreaObject> AreaList { get; private set; }
+    public List<Block> PlacedBlockList { get; private set; }
 
-    public void Initialize(GameObject root)
+    public void Initialize()
     {
-        if (AppleList == null)
-            AppleList = new List<AppleObject>();
-        else
-            AppleList.Clear();
-        if (BlockList == null)
-            BlockList = new List<Block>();
-        else
-            BlockList.Clear();
+        AppleList = new List<AppleObject>();
+        BlockList = new List<Block>();
+        AreaList = new List<BuildAreaObject>();
+        PlacedBlockList = new List<Block>();
+    }
+
+    public void SetStage(GameObject root)
+    {
+        AppleList.Clear();
+        BlockList.Clear();
+        AreaList.Clear();
+        PlacedBlockList.Clear();
+
 
         Newton = root.GetComponentInChildren<NewtonObject>();
         var apples = root.GetComponentsInChildren<AppleObject>();
@@ -32,6 +39,12 @@ public class ObjectManager : MonoBehaviour
             BlockList.Add(ele);
             ele.Initialize();
         }
+        var areas = root.GetComponentsInChildren<BuildAreaObject>();
+        foreach (var ele in areas)
+        {
+            AreaList.Add(ele);
+            ele.Initialize();
+        }
 
         Newton.Initialize();
     }
@@ -39,6 +52,8 @@ public class ObjectManager : MonoBehaviour
     public void ResetObject()
     {
         Newton.ResetStage();
+        foreach (var ele in AreaList)
+            ele.SetActive(true);
         foreach (var ele in AppleList)
             ele.ResetStage();
         foreach (var ele in BlockList)
@@ -46,7 +61,26 @@ public class ObjectManager : MonoBehaviour
     }
     public void PlayApple()
     {
+        foreach (var ele in AreaList)
+            ele.SetActive(false);
+        foreach (var ele in BlockList)
+            ele.Rigid.isKinematic = true;
+        foreach (var ele in PlacedBlockList)
+            ele.Rigid.isKinematic = true;
         foreach (var ele in AppleList)
             ele.PlayApple();
+    }
+
+    public bool CheckIsContained(Collider targetCollider)
+    {
+        Bounds targetBounds = targetCollider.bounds;
+
+        for(int i = 0; i < AreaList.Count; i++)
+        {
+            Bounds areaBounds = AreaList[i].Collider.bounds;
+            if (areaBounds.Contains(targetBounds.min) && areaBounds.Contains(targetBounds.max))
+                return true;
+        }
+        return false;
     }
 }

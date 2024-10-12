@@ -19,6 +19,7 @@ public class StageManager : MonoBehaviour, IManager
         StageList = GetComponent<StageListManager>();
         StageList.Initialize();
         StageObject = GetComponent<ObjectManager>();
+        StageObject.Initialize();
     }
 
     public void ResetStage()
@@ -27,7 +28,7 @@ public class StageManager : MonoBehaviour, IManager
 
         StageObject.ResetObject();
 
-        GameManager.Instance.UI.Stage.ResetGame();
+        GameManager.Instance.UI.Stage.SetActive(true);
     }
 
     public void SetStage()
@@ -62,6 +63,7 @@ public class StageManager : MonoBehaviour, IManager
         if (isMenu)
             return;
         StageList.ClearStage(currentStageNumber);
+        GameManager.Instance.UI.Stage.EndStage();
         GameManager.Instance.UI.Stage.Clear.Open();
     }
     public void InstantiateMenuStage()
@@ -70,9 +72,9 @@ public class StageManager : MonoBehaviour, IManager
         if(stageRootTransform.childCount > 0)
             Destroy(stageRootTransform.GetChild(0).gameObject);
 
-        GameObject stage = Instantiate(StageList.MainStage, stageRootTransform);
+        GameObject stage = Instantiate(StageList.MenuStage, stageRootTransform);
 
-        StageObject.Initialize(stage);
+        StageObject.SetStage(stage);
     }
 
     public void InstantiateStage(int stageNumber)
@@ -89,7 +91,7 @@ public class StageManager : MonoBehaviour, IManager
 
         BlockParentTransform = stage.transform;
 
-        StageObject.Initialize(stage);
+        StageObject.SetStage(stage);
 
     }
     public void OnExitButton()

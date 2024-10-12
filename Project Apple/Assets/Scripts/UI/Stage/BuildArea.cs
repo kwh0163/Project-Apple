@@ -4,12 +4,8 @@ using UnityEngine;
 
 public class BuildArea : MonoBehaviour
 {
-    [SerializeField] private float colliderSizeZ;
     [SerializeField] private float copiedBlockAlpha;
-    [SerializeField] private float changeAngleMult;
     [SerializeField] RectTransform scrollview;
-    RectTransform rectTransform;
-    BoxCollider boxCollider;
 
     Block blockPrefab;
 
@@ -21,10 +17,7 @@ public class BuildArea : MonoBehaviour
 
     public void Initialize()
     {
-        rectTransform = GetComponent<RectTransform>();
-        boxCollider = GetComponent<BoxCollider>();
 
-        boxCollider.size = new Vector3(rectTransform.rect.width, rectTransform.rect.height, colliderSizeZ);
     }
 
     private void Update()
@@ -64,7 +57,6 @@ public class BuildArea : MonoBehaviour
     }
     private void MoveBlock()
     {
-
         if (Input.mousePosition.y <= scrollview.rect.height)
         {
             copiedBlock.gameObject.SetActive(false);
@@ -73,15 +65,15 @@ public class BuildArea : MonoBehaviour
         else
             copiedBlock.gameObject.SetActive(true);
 
-
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("BuildArea")))
+        if(Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("BuildArea")))
         {
             Vector3 nextPos = hit.point;
             nextPos.z = 0;
             copiedBlock.MovePosition(nextPos);
-            ChangeColor(copiedBlock.CheckIsContained(boxCollider) && !copiedBlock.CheckOverlapped(selectedBlock?.gameObject));
+            bool isBlockContained = GameManager.Instance.Stage.StageObject.CheckIsContained(copiedBlock.Collider);
+            ChangeColor(isBlockContained && !copiedBlock.CheckOverlapped(selectedBlock?.gameObject));
         }
 
         if (Input.GetKeyDown(KeyCode.R))
@@ -117,25 +109,31 @@ public class BuildArea : MonoBehaviour
             GameManager.Instance.UI.Stage.Select.RemoveBlock(copiedBlock.Type);
             if (selectedBlock != null)
             {
+                GameManager.Instance.Stage.StageObject.PlacedBlockList.Remove(selectedBlock);
                 Destroy(selectedBlock.gameObject);
             }
         }
-        else if (copiedBlock.CheckIsContained(boxCollider) && !copiedBlock.CheckOverlapped(selectedBlock?.gameObject))
+        else
         {
-            Block temp;
-            if(selectedBlock == null)
-                temp = Instantiate(blockPrefab, GameManager.Instance.Stage.BlockParentTransform).GetComponent<Block>();
-            else
-                temp = selectedBlock;
-            temp.Initialize();
-            temp.MovePosition(copiedBlock.transform.position);
-            if (copiedBlock.IsFlipped != temp.IsFlipped)
-                temp.FlipBlock();
+            bool isBlockContained = GameManager.Instance.Stage.StageObject.CheckIsContained(copiedBlock.Collider);
+            if(isBlockContained && !copiedBlock.CheckOverlapped(selectedBlock?.gameObject))
+            {
+                Block temp;
+                if (selectedBlock == null)
+                    temp = Instantiate(blockPrefab, GameManager.Instance.Stage.BlockParentTransform).GetComponent<Block>();
+                else
+                    temp = selectedBlock;
+                temp.Initialize();
+                temp.MovePosition(copiedBlock.transform.position);
+                if (copiedBlock.IsFlipped != temp.IsFlipped)
+                    temp.FlipBlock();
+                GameManager.Instance.Stage.StageObject.PlacedBlockList.Add(temp);
+            }
+            else if(selectedBlock == null){
+                GameManager.Instance.UI.Stage.Select.RemoveBlock(copiedBlock.Type);
+            }
         }
-        else if(selectedBlock == null)
-        {
-            GameManager.Instance.UI.Stage.Select.RemoveBlock(copiedBlock.Type);
-        }
+        
         Destroy(copiedBlock.gameObject);
         isBlockMoving = false;
         selectedBlock = null;

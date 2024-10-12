@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2e6dcba5be883445b64aefa35d1562b, type: 3}
   m_Name: Stage6
   m_EditorClassIdentifier: 
-  stagePrefab: {fileID: 5696518622343235321, guid: d10af2258f2fde44c86d7c0654394362, type: 3}
-  blocks: 010000000100000001000000
+  stagePrefab: {fileID: 5696518622343235321, guid: 071fc5c2c50c5c5419cfdc12d8b96ad8, type: 3}
+  blocks: 0000000001000000
   isStageUnlocked: 0
-  isStageCleared: 1
+  isStageCleared: 0
