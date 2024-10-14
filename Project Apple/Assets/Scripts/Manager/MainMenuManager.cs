@@ -20,7 +20,7 @@ public class MainMenuManager : MonoBehaviour
     {
         GameManager.Instance.Stage.CurrentState = StageState.Play;
         GameManager.Instance.Stage.StageObject.ResetObject();
-        GameManager.Instance.Stage.StageObject.PlayApple();
+        GameManager.Instance.Stage.StageObject.PlayStage();
         yield return new WaitUntil(() => GameManager.Instance.Stage.CurrentState == StageState.End);
         yield return new WaitForSeconds(5f);
         currentCoroutine = StartCoroutine(PlayApple());

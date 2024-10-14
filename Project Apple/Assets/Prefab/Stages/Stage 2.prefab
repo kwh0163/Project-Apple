@@ -111,6 +111,10 @@ PrefabInstance:
       propertyPath: m_Constraints
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 335407285311662929, guid: e72cfda64bdbcfd4c90977c15ec32c6e, type: 3}
+      propertyPath: isStatic
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 467766829098692862, guid: e72cfda64bdbcfd4c90977c15ec32c6e, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.94

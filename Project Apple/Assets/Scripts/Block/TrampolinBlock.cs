@@ -24,7 +24,7 @@ public class TrampolinBlock : Block
 
             AppleObject apple = collision.collider.GetComponent<AppleObject>();
             float yForce = collision.impulse.magnitude * (1f / apple.Rigid.mass) * bounciness;
-            if (apple.PrevBlock != null && apple.PrevBlock.Type == BlockType.Trampolin)
+            if (apple.PrevBlock != null && apple.PrevBlock.Type == ObjectType.Trampolin)
                 yForce *= continueJumpMult;
             apple.AddForce(new Vector3(0, yForce, 0), ForceMode.VelocityChange);
         }

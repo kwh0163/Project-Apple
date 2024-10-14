@@ -10,12 +10,12 @@ public class BlockSelect : MonoBehaviour
     [SerializeField] private Vector3 buttonTargetRot;
 
     [SerializeField] private GameObject selectObject;
-    [SerializeField] private List<BlockType> blockKey;
-    [SerializeField] private List<BlockImage> blockValue;
+    [SerializeField] private List<ObjectType> blockKey;
+    [SerializeField] private List<ObjectImage> blockValue;
 
     [SerializeField] private float openTime;
 
-    private Dictionary<BlockType, BlockImage> blockImages;
+    private Dictionary<ObjectType, ObjectImage> blockImages;
 
     StageData currentData;
 
@@ -36,13 +36,13 @@ public class BlockSelect : MonoBehaviour
         buttonImageDefaultRotation = buttonRect.rotation.eulerAngles;
     }
 
-    public void UseBlock(BlockType block)
+    public void UseObject(ObjectType type)
     {
-        blockImages[block].UseBlock();
+        blockImages[type].UseObject();
     }
-    public void RemoveBlock(BlockType block)
+    public void RemoveObject(ObjectType type)
     {
-        blockImages[block].AddBlock();
+        blockImages[type].AddObject();
     }
     public void SetImages(StageData blockData)
     {
@@ -50,7 +50,7 @@ public class BlockSelect : MonoBehaviour
         foreach (var ele in blockValue)
             ele.ResetImage();
         foreach (var ele in blockData.BlockData)
-            blockImages[ele].AddBlock();
+            blockImages[ele].AddObject();
     }
     public void ResetImages()
     {

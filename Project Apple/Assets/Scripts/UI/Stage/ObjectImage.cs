@@ -4,29 +4,27 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class BlockImage : MonoBehaviour, IPointerDownHandler
+public class ObjectImage : MonoBehaviour, IPointerDownHandler
 {
-    [SerializeField] private Block block;
-    public Block Block { get { return block; } }
+    [SerializeField] private GameObject moveableObject;
+    public GameObject GetObject { get { return moveableObject; } }
     private Text countText;
 
     private int currentCount;
-
-    private bool isClicked = false;
 
     public void Initialize()
     {
         currentCount = 0;
         countText = GetComponentInChildren<Text>();
     }
-    public void AddBlock()
+    public void AddObject()
     {
         if (currentCount == 0)
             gameObject.SetActive(true);
         currentCount++;
         SetCount();
     }
-    public void UseBlock()
+    public void UseObject()
     {
         currentCount--;
         SetCount();
@@ -46,7 +44,7 @@ public class BlockImage : MonoBehaviour, IPointerDownHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        UseBlock();
-        GameManager.Instance.UI.Stage.Area.CopySelectedBlock(block);
+        UseObject();
+        GameManager.Instance.UI.Stage.Area.CopySelectedObject(moveableObject);
     }
 }

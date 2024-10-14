@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e2e6dcba5be883445b64aefa35d1562b, type: 3}
-  m_Name: Stage15
+  m_Name: Stage16
   m_EditorClassIdentifier: 
-  stagePrefab: {fileID: 5696518622343235321, guid: 83cebc16f6742fd448c1dede94c4c35e, type: 3}
-  blocks: 03000000
-  isStageUnlocked: 0
+  stagePrefab: {fileID: 5696518622343235321, guid: 4fce82f89006f12419ee592dddcd37de, type: 3}
+  blocks: 0300000000000000
+  isStageUnlocked: 1
   isStageCleared: 1

@@ -3,13 +3,10 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class AppleObject : MonoBehaviour
+public class AppleObject : MovableObject
 {
     private Rigidbody rigid;
     public Rigidbody Rigid { get { return rigid; } }
-
-    private Vector3 defaultPosition;
-    private Quaternion defaultRotation;
 
     private Vector3 velocity;
     private bool isEnd = false;
@@ -22,15 +19,15 @@ public class AppleObject : MonoBehaviour
             velocity = rigid.velocity;
     }
 
-    public void Initialize()
+    public override void Initialize()
     {
-        defaultPosition = transform.position;
-        defaultRotation = transform.rotation;
+        base.Initialize();
+
         rigid = GetComponent<Rigidbody>();
 
         PrevBlock = null;
 
-        ResetStage();
+        SetFreeze();
     }
 
     public void SetVelocity(Vector3 vel)
@@ -43,24 +40,26 @@ public class AppleObject : MonoBehaviour
         rigid.AddForce(direction, force);
     }
 
-    public void PlayApple()
+    public override void PlayStage()
     {
         rigid.useGravity = true;
         rigid.constraints = RigidbodyConstraints.None;
     }
 
-    public void ResetStage()
+    public override void ResetStage()
     {
-        isEnd = false;
-        rigid.useGravity = false;
-        rigid.constraints = RigidbodyConstraints.FreezeAll;
-        transform.SetPositionAndRotation(defaultPosition, defaultRotation);
+        base.ResetStage();
+
+        SetFreeze();
     }
 
-    private void OnCollisionEnter(Collision collision)
+    protected override void OnCollisionEnter(Collision collision)
     {
+        base.OnCollisionEnter(collision);
         if (collision.collider.CompareTag("Newton"))
         {
+            if (GameManager.Instance.Stage.CurrentState != StageState.Play)
+                return;
             if (isEnd)
                 return;
             isEnd = true;
@@ -69,5 +68,12 @@ public class AppleObject : MonoBehaviour
             newton.RigidFreezeNone();
             collision.collider.GetComponent<Rigidbody>().velocity = velocity;
         }
+    }
+
+    void SetFreeze()
+    {
+        isEnd = false;
+        rigid.useGravity = false;
+        rigid.constraints = RigidbodyConstraints.FreezeAll;
     }
 }

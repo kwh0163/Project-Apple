@@ -53,7 +53,7 @@ public class StageManager : MonoBehaviour, IManager
         CurrentState = StageState.Play;
         GameManager.Instance.UI.Stage.PlayStage();
 
-        StageObject.PlayApple();
+        StageObject.PlayStage();
 
     }
 

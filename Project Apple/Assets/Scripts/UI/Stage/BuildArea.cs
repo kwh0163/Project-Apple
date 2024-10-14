@@ -7,11 +7,11 @@ public class BuildArea : MonoBehaviour
     [SerializeField] private float copiedBlockAlpha;
     [SerializeField] RectTransform scrollview;
 
-    Block blockPrefab;
+    GameObject objectPrefab;
 
-    Block selectedBlock;
-    Block copiedBlock;
-    Renderer copiedBlockRenderer;
+    MovableObject selectedObject;
+    MovableObject copiedObject;
+    Renderer copiedObjectRenderer;
 
     bool isBlockMoving = false;
 
@@ -43,14 +43,14 @@ public class BuildArea : MonoBehaviour
         RaycastHit[] hits = Physics.RaycastAll(ray);
         foreach (var ele in hits)
         {
-            if (ele.collider.TryGetComponent(out selectedBlock))
+            if (ele.collider.TryGetComponent(out selectedObject))
             {
-                if (selectedBlock.IsStatic)
+                if (selectedObject.IsStatic)
                 {
-                    selectedBlock = null;
+                    selectedObject = null;
                     return;
                 }
-                CopySelectedBlock(selectedBlock);
+                CopySelectedObject(selectedObject.gameObject);
                 break;
             }
         }
@@ -59,11 +59,11 @@ public class BuildArea : MonoBehaviour
     {
         if (Input.mousePosition.y <= scrollview.rect.height)
         {
-            copiedBlock.gameObject.SetActive(false);
+            copiedObject.gameObject.SetActive(false);
             return;
         }
         else
-            copiedBlock.gameObject.SetActive(true);
+            copiedObject.gameObject.SetActive(true);
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -71,80 +71,80 @@ public class BuildArea : MonoBehaviour
         {
             Vector3 nextPos = hit.point;
             nextPos.z = 0;
-            copiedBlock.MovePosition(nextPos);
-            bool isBlockContained = GameManager.Instance.Stage.StageObject.CheckIsContained(copiedBlock.Collider);
-            ChangeColor(isBlockContained && !copiedBlock.CheckOverlapped(selectedBlock?.gameObject));
+            copiedObject.MovePosition(nextPos);
+            bool isBlockContained = GameManager.Instance.Stage.StageObject.CheckIsContained(copiedObject.Collider);
+            ChangeColor(isBlockContained && !copiedObject.CheckOverlapped(selectedObject?.gameObject));
         }
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            copiedBlock.FlipBlock();
+            copiedObject.FlipBlock();
         }
 
     }
 
-    public void CopySelectedBlock(Block block)
+    public void CopySelectedObject(GameObject @object)
     {
-        if (selectedBlock == null)
-            blockPrefab = block;
+        if (selectedObject == null)
+            objectPrefab = @object;
         isBlockMoving = true;
-        copiedBlock = Instantiate(block, block.transform.position, block.transform.rotation);
-        copiedBlock.Initialize();
+        copiedObject = Instantiate(@object, @object.transform.position, @object.transform.rotation).GetComponent<MovableObject>();
+        copiedObject.Initialize();
 
-        copiedBlockRenderer = copiedBlock.GetComponent<Renderer>();
-        copiedBlockRenderer.material = new Material(copiedBlockRenderer.material);
-        Color color = copiedBlockRenderer.material.color;
+        copiedObjectRenderer = copiedObject.GetComponent<Renderer>();
+        copiedObjectRenderer.material = new Material(copiedObjectRenderer.material);
+        Color color = copiedObjectRenderer.material.color;
         color.a = copiedBlockAlpha;
-        copiedBlockRenderer.material.color = color;
+        copiedObjectRenderer.material.color = color;
 
-        MakeMaterialTransparent(copiedBlockRenderer.material);
+        MakeMaterialTransparent(copiedObjectRenderer.material);
     }
     void SetBlockAsCopied()
     {
-        if (copiedBlock == null)
+        if (copiedObject == null)
             return;
 
         if (Input.mousePosition.y <= scrollview.rect.height)
         {
-            GameManager.Instance.UI.Stage.Select.RemoveBlock(copiedBlock.Type);
-            if (selectedBlock != null)
+            GameManager.Instance.UI.Stage.Select.RemoveObject(copiedObject.Type);
+            if (selectedObject != null)
             {
-                GameManager.Instance.Stage.StageObject.PlacedBlockList.Remove(selectedBlock);
-                Destroy(selectedBlock.gameObject);
+                GameManager.Instance.Stage.StageObject.PlacedObjectList.Remove(selectedObject);
+                Destroy(selectedObject.gameObject);
             }
         }
         else
         {
-            bool isBlockContained = GameManager.Instance.Stage.StageObject.CheckIsContained(copiedBlock.Collider);
-            if(isBlockContained && !copiedBlock.CheckOverlapped(selectedBlock?.gameObject))
+            bool isBlockContained = GameManager.Instance.Stage.StageObject.CheckIsContained(copiedObject.Collider);
+            if(isBlockContained && !copiedObject.CheckOverlapped(selectedObject?.gameObject))
             {
-                Block temp;
-                if (selectedBlock == null)
-                    temp = Instantiate(blockPrefab, GameManager.Instance.Stage.BlockParentTransform).GetComponent<Block>();
+                MovableObject temp;
+                if (selectedObject == null)
+                    temp = Instantiate(objectPrefab, GameManager.Instance.Stage.BlockParentTransform).GetComponent<MovableObject>();
                 else
-                    temp = selectedBlock;
+                    temp = selectedObject;
                 temp.Initialize();
-                temp.MovePosition(copiedBlock.transform.position);
-                if (copiedBlock.IsFlipped != temp.IsFlipped)
+                temp.MovePosition(copiedObject.transform.position);
+                if (copiedObject.IsFlipped != temp.IsFlipped)
                     temp.FlipBlock();
-                GameManager.Instance.Stage.StageObject.PlacedBlockList.Add(temp);
+                GameManager.Instance.Stage.StageObject.PlacedObjectList.Add(temp);
             }
-            else if(selectedBlock == null){
-                GameManager.Instance.UI.Stage.Select.RemoveBlock(copiedBlock.Type);
+            else if(selectedObject == null){
+                GameManager.Instance.UI.Stage.Select.RemoveObject(copiedObject.Type);
             }
         }
         
-        Destroy(copiedBlock.gameObject);
+        Destroy(copiedObject.gameObject);
         isBlockMoving = false;
-        selectedBlock = null;
+        selectedObject = null;
     }
 
     void ChangeColor(bool isAble)
     {
         if (isAble)
-            copiedBlockRenderer.material.color = new Color(0, 1, 0, copiedBlockAlpha);
+            copiedObjectRenderer.material.color = new Color(0, 1, 0, copiedBlockAlpha);
         else
-            copiedBlockRenderer.material.color = new Color(1, 0, 0, copiedBlockAlpha);
+            copiedObjectRenderer.material.color = new Color(1, 0, 0, copiedBlockAlpha);
     }
 
     void MakeMaterialTransparent(Material material)

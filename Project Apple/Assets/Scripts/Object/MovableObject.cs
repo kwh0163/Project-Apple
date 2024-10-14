@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovableObject : MonoBehaviour
+public abstract class MovableObject : MonoBehaviour
 {
     [SerializeField] private bool isStatic;
     public bool IsStatic { get { return isStatic; } }
@@ -10,6 +10,7 @@ public class MovableObject : MonoBehaviour
     public bool IsFlipped { get { return isFlipped; } }
     [SerializeField] private ObjectType objectType;
     public ObjectType Type { get { return objectType; } }
+    public Collider Collider { get; private set; }
     public bool IsOverlapped { get; private set; }
 
     private Vector3 defaultPosition;
@@ -21,6 +22,8 @@ public class MovableObject : MonoBehaviour
     {
         defaultPosition = transform.position;
         defaultRotation = transform.rotation;
+
+        Collider = GetComponent<Collider>();
     }
 
     public virtual void FlipBlock()
@@ -32,7 +35,7 @@ public class MovableObject : MonoBehaviour
     {
         transform.position = pos;
     }
-
+    public abstract void PlayStage();
     public virtual void ResetStage()
     {
         transform.SetPositionAndRotation(defaultPosition, defaultRotation);

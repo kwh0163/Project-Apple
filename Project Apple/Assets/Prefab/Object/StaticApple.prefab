@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 19427283288201908}
   - component: {fileID: 335407285311662929}
   m_Layer: 7
-  m_Name: Apple
+  m_Name: StaticApple
   m_TagString: Apple
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -146,7 +146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15877a4a7a52af54ea1cc7b5b70cc661, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isStatic: 0
+  isStatic: 1
   isFlipped: 0
   objectType: 3
   PrevBlock: {fileID: 0}

@@ -4,45 +4,33 @@ using UnityEngine;
 
 public class ObjectManager : MonoBehaviour
 {
-    public List<AppleObject> AppleList { get; private set; }
     public NewtonObject Newton { get; private set; }
-    public List<Block> BlockList { get; private set; }
     public List<BuildAreaObject> AreaList { get; private set; }
-    public List<Block> PlacedBlockList { get; private set; }
+    public List<MovableObject> PlacedObjectList { get; private set; }
 
     public void Initialize()
     {
-        AppleList = new List<AppleObject>();
-        BlockList = new List<Block>();
         AreaList = new List<BuildAreaObject>();
-        PlacedBlockList = new List<Block>();
+        PlacedObjectList = new List<MovableObject>();
     }
 
     public void SetStage(GameObject root)
     {
-        AppleList.Clear();
-        BlockList.Clear();
         AreaList.Clear();
-        PlacedBlockList.Clear();
+        PlacedObjectList.Clear();
 
 
         Newton = root.GetComponentInChildren<NewtonObject>();
-        var apples = root.GetComponentsInChildren<AppleObject>();
-        foreach (var ele in apples)
-        {
-            AppleList.Add(ele);
-            ele.Initialize();
-        }
-        var blocks = root.GetComponentsInChildren<Block>();
-        foreach (var ele in blocks)
-        {
-            BlockList.Add(ele);
-            ele.Initialize();
-        }
         var areas = root.GetComponentsInChildren<BuildAreaObject>();
         foreach (var ele in areas)
         {
             AreaList.Add(ele);
+            ele.Initialize();
+        }
+        var objects = root.GetComponentsInChildren<MovableObject>();
+        foreach(var ele in objects)
+        {
+            PlacedObjectList.Add(ele);
             ele.Initialize();
         }
 
@@ -54,21 +42,15 @@ public class ObjectManager : MonoBehaviour
         Newton.ResetStage();
         foreach (var ele in AreaList)
             ele.SetActive(true);
-        foreach (var ele in AppleList)
-            ele.ResetStage();
-        foreach (var ele in BlockList)
+        foreach (var ele in PlacedObjectList)
             ele.ResetStage();
     }
-    public void PlayApple()
+    public void PlayStage()
     {
         foreach (var ele in AreaList)
             ele.SetActive(false);
-        foreach (var ele in BlockList)
-            ele.Rigid.isKinematic = true;
-        foreach (var ele in PlacedBlockList)
-            ele.Rigid.isKinematic = true;
-        foreach (var ele in AppleList)
-            ele.PlayApple();
+        foreach (var ele in PlacedObjectList)
+            ele.PlayStage();
     }
 
     public bool CheckIsContained(Collider targetCollider)

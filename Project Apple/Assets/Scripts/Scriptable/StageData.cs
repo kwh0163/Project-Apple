@@ -6,10 +6,10 @@ using UnityEngine;
 public class StageData : ScriptableObject
 {
     [SerializeField] private GameObject stagePrefab;
-    [SerializeField] private List<BlockType> blocks;
+    [SerializeField] private List<ObjectType> blocks;
     public bool isStageUnlocked;
     public bool isStageCleared;
     public GameObject StagePrefab { get { return stagePrefab; } }
-    public List<BlockType> BlockData { get { return blocks; } }
+    public List<ObjectType> BlockData { get { return blocks; } }
 
 }
