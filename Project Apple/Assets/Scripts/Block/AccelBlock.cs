@@ -14,19 +14,19 @@ public class AccelBlock : Block
         base.Initialize();
 
         isCalled = false;
-        onAppleEnterEvent.AddListener(AddForce);
     }
-    private void AddForce(Collision collision)
+    protected override void OnAppleEnter(Collision collision)
     {
+
         if (!isCalled)
             currentCoroutine = StartCoroutine(ForceCoroutine(collision));
+        base.OnAppleEnter(collision);
     }
 
     IEnumerator ForceCoroutine(Collision collision)
     {
         isCalled = true;
         Vector3 force = (IsFlipped ? Vector3.left : Vector3.right) * power;
-        Debug.Log(force);
         collision.collider.GetComponent<AppleObject>().AddForce(force, ForceMode.VelocityChange);
         yield return new WaitForSeconds(1);
         isCalled = false;

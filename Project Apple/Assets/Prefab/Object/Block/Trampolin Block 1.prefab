@@ -122,8 +122,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isStatic: 1
   isFlipped: 0
-  blockType: 0
+  blockType: 2
   bounciness: 1.15
+  continueJumpMult: 1.25
 --- !u!120 &-610407486817194845
 LineRenderer:
   serializedVersion: 2

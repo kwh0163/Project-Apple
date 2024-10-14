@@ -12,3 +12,11 @@ public enum BlockType
     Accel,
     Trampolin
 }
+
+public enum ObjectType
+{
+    Normal,
+    Accel,
+    Trampolin,
+    Apple
+}

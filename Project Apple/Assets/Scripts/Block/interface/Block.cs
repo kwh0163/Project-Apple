@@ -20,8 +20,6 @@ public class Block : MonoBehaviour
 
     public bool IsOverlapped { get; private set; }
     public bool IsFlipped { get { return isFlipped; } }
-    protected UnityEvent<Collision> onAppleEnterEvent = new();
-    protected UnityEvent<Collision> onAppleExitEvent = new();
 
     private List<GameObject> overlapBlocks = new();
 
@@ -29,11 +27,8 @@ public class Block : MonoBehaviour
     {
         defaultPosition = transform.position;
         defaultRotation = transform.rotation;
-        onAppleEnterEvent.RemoveAllListeners();
-        onAppleExitEvent.RemoveAllListeners();
 
         Collider = GetComponent<Collider>();
-
         Rigid = GetComponent<Rigidbody>();
     }
 
@@ -61,7 +56,7 @@ public class Block : MonoBehaviour
         if (collision.collider.CompareTag("Apple"))
         {
             if (GameManager.Instance.Stage.CurrentState == StageState.Play)
-                onAppleEnterEvent.Invoke(collision);
+                OnAppleEnter(collision);
         }
     }
     private void OnCollisionExit(Collision collision)
@@ -72,7 +67,7 @@ public class Block : MonoBehaviour
         if (collision.collider.CompareTag("Apple"))
         {
             if (GameManager.Instance.Stage.CurrentState == StageState.Play)
-                onAppleExitEvent.Invoke(collision);
+                OnAppleExit(collision);
         }
     }
     public bool CheckOverlapped(GameObject ignoreObject)
@@ -86,9 +81,17 @@ public class Block : MonoBehaviour
         }
         return false;
     }
-
     protected virtual void OnDestroy()
     {
         
+    }
+
+    protected virtual void OnAppleEnter(Collision collision)
+    {
+        collision.collider.GetComponent<AppleObject>().PrevBlock = this;
+    }
+    protected virtual void OnAppleExit(Collision collision)
+    {
+
     }
 }

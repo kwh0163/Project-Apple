@@ -13,6 +13,9 @@ public class AppleObject : MonoBehaviour
 
     private Vector3 velocity;
     private bool isEnd = false;
+
+    public Block PrevBlock;
+
     private void Update()
     {
         if (!isEnd)
@@ -24,6 +27,8 @@ public class AppleObject : MonoBehaviour
         defaultPosition = transform.position;
         defaultRotation = transform.rotation;
         rigid = GetComponent<Rigidbody>();
+
+        PrevBlock = null;
 
         ResetStage();
     }
