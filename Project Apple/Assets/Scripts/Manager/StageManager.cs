@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
-public class StageManager : MonoBehaviour, IManager
+public class StageManager : MonoBehaviour
 {
     [SerializeField] private Transform stageRootTransform;
     public ObjectManager StageObject { get; private set; }

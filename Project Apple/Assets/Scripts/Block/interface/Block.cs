@@ -21,7 +21,7 @@ public class Block : MovableObject
         Rigid.isKinematic = false;
     }
 
-    protected override void OnCollisionEnter(Collision collision)
+    protected sealed override void OnCollisionEnter(Collision collision)
     {
         base.OnCollisionEnter(collision);
         if (collision.collider.CompareTag("Apple"))
@@ -30,7 +30,7 @@ public class Block : MovableObject
                 OnAppleEnter(collision);
         }
     }
-    protected override void OnCollisionExit(Collision collision)
+    protected sealed override void OnCollisionExit(Collision collision)
     {
         base.OnCollisionExit(collision);
         if (collision.collider.CompareTag("Apple"))

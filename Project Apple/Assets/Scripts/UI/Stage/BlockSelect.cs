@@ -21,6 +21,7 @@ public class BlockSelect : MonoBehaviour
 
     bool isOpening = false;
     bool isOpened = true;
+    public bool IsOpened { get { return isOpened; } }
     Vector3 selectWindowDefaultPosition;
     Vector3 buttonImageDefaultRotation;
 

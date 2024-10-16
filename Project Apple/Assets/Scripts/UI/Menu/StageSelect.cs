@@ -45,7 +45,7 @@ public class StageSelect : MonoBehaviour
 
     void ResetStage()
     {
-        int maxPage = GameManager.Instance.Stage.StageList.StageCount / countsInPage;
+        int maxPage = (GameManager.Instance.Stage.StageList.StageCount - 1) / countsInPage;
         
         prevButton.interactable = currentPage != 0;
         nextButton.interactable = currentPage != maxPage;

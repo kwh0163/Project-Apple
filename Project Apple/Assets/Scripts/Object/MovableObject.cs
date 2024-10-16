@@ -5,23 +5,23 @@ using UnityEngine;
 public abstract class MovableObject : MonoBehaviour
 {
     [SerializeField] private bool isStatic;
-    public bool IsStatic { get { return isStatic; } }
+    public bool IsStatic => isStatic;
     [SerializeField] private bool isFlipped;
-    public bool IsFlipped { get { return isFlipped; } }
+    public bool IsFlipped => isFlipped;
     [SerializeField] private ObjectType objectType;
-    public ObjectType Type { get { return objectType; } }
+    public ObjectType Type => objectType;
     public Collider Collider { get; private set; }
     public bool IsOverlapped { get; private set; }
 
-    private Vector3 defaultPosition;
-    private Quaternion defaultRotation;
+    protected Vector3 DefaultPosition { get; private set; }
+    protected Quaternion DefaultRotation { get; private set; }
 
-    private List<GameObject> overlapBlocks = new();
+    private readonly List<GameObject> overlapBlocks = new();
 
     public virtual void Initialize()
     {
-        defaultPosition = transform.position;
-        defaultRotation = transform.rotation;
+        DefaultPosition = transform.position;
+        DefaultRotation = transform.rotation;
 
         Collider = GetComponent<Collider>();
     }
@@ -38,7 +38,7 @@ public abstract class MovableObject : MonoBehaviour
     public abstract void PlayStage();
     public virtual void ResetStage()
     {
-        transform.SetPositionAndRotation(defaultPosition, defaultRotation);
+        transform.SetPositionAndRotation(DefaultPosition, DefaultRotation);
     }
 
     public bool CheckOverlapped(GameObject ignoreObject)

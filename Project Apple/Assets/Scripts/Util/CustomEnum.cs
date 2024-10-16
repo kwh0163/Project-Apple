@@ -6,17 +6,19 @@ public enum StageState
     End
 }
 
-public enum BlockType
-{
-    Normal,
-    Accel,
-    Trampolin
-}
-
 public enum ObjectType
 {
     Normal,
     Accel,
     Trampolin,
-    Apple
+    Apple,
+    Button,
+    Door
+}
+
+public enum ConnectType
+{
+    Electric,
+    Rope,
+    Chain
 }

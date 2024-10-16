@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public MainMenuManager Menu { get; private set; }
     public StageManager Stage { get; private set; }
     public UIManager UI { get; private set; }
+    public PlayerPrefsManager Prefs { get; private set; }
 
     private void Awake()
     {
@@ -23,6 +24,9 @@ public class GameManager : MonoBehaviour
     {
         Stage = GetComponentInChildren<StageManager>();
         Stage.Initialize();
+
+        Prefs = GetComponentInChildren<PlayerPrefsManager>();
+        Prefs.Initialize();
 
         UI = GetComponentInChildren<UIManager>();
         UI.Initialize();

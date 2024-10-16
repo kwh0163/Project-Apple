@@ -2,6 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+enum BuildState
+{
+    None,
+    Selecting,
+    Moving,
+    Connecting
+}
+
+
 public class BuildArea : MonoBehaviour
 {
     [SerializeField] private float copiedBlockAlpha;
@@ -37,6 +46,9 @@ public class BuildArea : MonoBehaviour
 
     private void SelectBlock()
     {
+        if (GameManager.Instance.Stage.CurrentState != StageState.Prepare)
+            return;
+
         if (isBlockMoving)
             return;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -57,7 +69,8 @@ public class BuildArea : MonoBehaviour
     }
     private void MoveBlock()
     {
-        if (Input.mousePosition.y <= scrollview.rect.height)
+        if (GameManager.Instance.UI.Stage.Select.IsOpened
+            &&Input.mousePosition.y <= scrollview.rect.height)
         {
             copiedObject.gameObject.SetActive(false);
             return;
@@ -104,7 +117,8 @@ public class BuildArea : MonoBehaviour
         if (copiedObject == null)
             return;
 
-        if (Input.mousePosition.y <= scrollview.rect.height)
+        if (GameManager.Instance.UI.Stage.Select.IsOpened
+            && Input.mousePosition.y <= scrollview.rect.height)
         {
             GameManager.Instance.UI.Stage.Select.RemoveObject(copiedObject.Type);
             if (selectedObject != null)
@@ -123,11 +137,11 @@ public class BuildArea : MonoBehaviour
                     temp = Instantiate(objectPrefab, GameManager.Instance.Stage.BlockParentTransform).GetComponent<MovableObject>();
                 else
                     temp = selectedObject;
-                temp.Initialize();
                 temp.MovePosition(copiedObject.transform.position);
                 if (copiedObject.IsFlipped != temp.IsFlipped)
                     temp.FlipBlock();
                 GameManager.Instance.Stage.StageObject.PlacedObjectList.Add(temp);
+                temp.Initialize();
             }
             else if(selectedObject == null){
                 GameManager.Instance.UI.Stage.Select.RemoveObject(copiedObject.Type);

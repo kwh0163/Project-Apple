@@ -57,12 +57,19 @@ public class ObjectManager : MonoBehaviour
     {
         Bounds targetBounds = targetCollider.bounds;
 
+        bool min = false;
+        bool max = false;
+
         for(int i = 0; i < AreaList.Count; i++)
         {
             Bounds areaBounds = AreaList[i].Collider.bounds;
-            if (areaBounds.Contains(targetBounds.min) && areaBounds.Contains(targetBounds.max))
-                return true;
+            if (areaBounds.Contains(targetBounds.min))
+                min = true;
+            if (areaBounds.Contains(targetBounds.max))
+                max = true;
         }
-        return false;
+
+
+        return (min && max);
     }
 }

@@ -122,7 +122,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isStatic: 1
   isFlipped: 0
-  blockType: 1
+  objectType: 1
   power: 8
 --- !u!120 &6361347418557427043
 LineRenderer:

@@ -6,6 +6,7 @@ public class AccelBlock : Block
 {
     [SerializeField] private float power;
 
+    AppleObject prevApple;
     Coroutine currentCoroutine;
     bool isCalled;
 
@@ -17,17 +18,24 @@ public class AccelBlock : Block
     }
     protected override void OnAppleEnter(Collision collision)
     {
-
+        AppleObject collisionApple = collision.collider.GetComponent<AppleObject>();
+        if(prevApple != collisionApple)
+        {
+            if (currentCoroutine != null)
+                StopCoroutine(currentCoroutine);
+            isCalled = false;
+        }
         if (!isCalled)
-            currentCoroutine = StartCoroutine(ForceCoroutine(collision));
+            currentCoroutine = StartCoroutine(ForceCoroutine(collisionApple));
+        prevApple = collisionApple;
         base.OnAppleEnter(collision);
     }
 
-    IEnumerator ForceCoroutine(Collision collision)
+    IEnumerator ForceCoroutine(AppleObject apple)
     {
         isCalled = true;
         Vector3 force = (IsFlipped ? Vector3.left : Vector3.right) * power;
-        collision.collider.GetComponent<AppleObject>().AddForce(force, ForceMode.VelocityChange);
+        apple.AddForce(force, ForceMode.VelocityChange);
         yield return new WaitForSeconds(1);
         isCalled = false;
         currentCoroutine = null;
