@@ -1,4 +1,4 @@
-﻿public interface InteractInterface
+﻿public interface IInteract
 {
     ConnectType ConnectType { get; }
     void Interact();

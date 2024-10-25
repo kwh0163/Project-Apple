@@ -4,6 +4,8 @@ using UnityEngine;
 
 public abstract class MovableObject : MonoBehaviour
 {
+    private Outline outline;
+    public Outline OutLine => outline;
     [SerializeField] private bool isStatic;
     public bool IsStatic => isStatic;
     [SerializeField] private bool isFlipped;
@@ -23,9 +25,25 @@ public abstract class MovableObject : MonoBehaviour
         DefaultPosition = transform.position;
         DefaultRotation = transform.rotation;
 
-        Collider = GetComponent<Collider>();
-    }
+        outline = GetComponent<Outline>();
 
+        Collider = GetComponent<Collider>();
+
+        Release();
+    }
+    public void Select(Color color)
+    {
+        outline.OutlineColor = color;
+        outline.enabled = true;
+    }
+    public void Release()
+    {
+        outline.enabled = false;
+    }
+    public virtual void DestoryObject()
+    {
+
+    }
     public virtual void FlipBlock()
     {
         isFlipped = !isFlipped;
@@ -38,6 +56,7 @@ public abstract class MovableObject : MonoBehaviour
     public abstract void PlayStage();
     public virtual void ResetStage()
     {
+        Release();
         transform.SetPositionAndRotation(DefaultPosition, DefaultRotation);
     }
 

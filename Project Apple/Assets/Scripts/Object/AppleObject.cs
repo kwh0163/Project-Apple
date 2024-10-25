@@ -6,7 +6,7 @@ using UnityEngine;
 public class AppleObject : MovableObject
 {
     private Rigidbody rigid;
-    public Rigidbody Rigid { get { return rigid; } }
+    public Rigidbody Rigid => rigid;
 
     private Vector3 velocity;
     private bool isEnd = false;

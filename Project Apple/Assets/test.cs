@@ -5,22 +5,18 @@ using UnityEngine;
 
 public class test : MonoBehaviour
 {
-    public List<GameObject> list;
-    private void Start()
+    float timeCounter = 0;
+    private void Update()
     {
-        list = new List<GameObject>();
-        foreach(var ele in FindObjectsOfType<GameObject>())
+        if(Input.GetMouseButton(0))
         {
-            list.Add(ele);
+            timeCounter += Time.deltaTime;
         }
-        StartCoroutine(Iasdf());
-    }
-
-    IEnumerator Iasdf()
-    {
-        yield return new WaitForSeconds(3);
-        list.Clear();
-        yield return null;
+        if (Input.GetMouseButtonUp(0))
+        {
+            Debug.Log("time = " + timeCounter);
+            timeCounter = 0;
+        }
     }
 }
 #endif

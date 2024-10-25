@@ -9,6 +9,8 @@ public class DoorBlock : InteractableBlock
     [SerializeField] Vector3 targetPosition;
     float timeCounter;
 
+    Vector3 worldTargetPosition;
+
     Coroutine currentCoroutine;
 
     bool isInteracted;
@@ -21,10 +23,11 @@ public class DoorBlock : InteractableBlock
     }
     public override void ResetStage()
     {
+        base.ResetStage();
         if (currentCoroutine != null)
             StopCoroutine(currentCoroutine);
         isInteracted = false;
-        base.ResetStage();
+        timeCounter = 0;
 
     }
     public override void Interact()
@@ -41,7 +44,7 @@ public class DoorBlock : InteractableBlock
         {
             timeCounter += Time.deltaTime;
             float a = timeCounter / openingTime;
-            Vector3 newPosition = Vector3.Lerp(DefaultPosition, IsFlipped ? -targetPosition : targetPosition, a);
+            Vector3 newPosition = Vector3.Lerp(DefaultPosition, DefaultPosition + (IsFlipped ? -targetPosition : targetPosition), a);
 
             MovePosition(newPosition);
             yield return null;

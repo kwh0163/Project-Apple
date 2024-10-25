@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2033948785641158738}
   - component: {fileID: 19427283288201908}
   - component: {fileID: 335407285311662929}
+  - component: {fileID: 4517537598367788959}
   m_Layer: 7
   m_Name: Apple
   m_TagString: Apple
@@ -150,3 +151,21 @@ MonoBehaviour:
   isFlipped: 0
   objectType: 3
   PrevBlock: {fileID: 0}
+--- !u!114 &4517537598367788959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335030467915447688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0, g: 1, b: 0, a: 1}
+  outlineWidth: 10
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []

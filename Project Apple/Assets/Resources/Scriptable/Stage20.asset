@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Stage20
   m_EditorClassIdentifier: 
   stagePrefab: {fileID: 5696518622343235321, guid: 8691e2778aad97541be7f91aaaa16122, type: 3}
-  blocks: 
+  blocks: 03000000
   isStageUnlocked: 0
-  isStageCleared: 0
+  isStageCleared: 1

@@ -1,11 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
 enum BuildState
 {
     None,
-    Selecting,
     Moving,
     Connecting
 }
@@ -15,41 +14,108 @@ public class BuildArea : MonoBehaviour
 {
     [SerializeField] private float copiedBlockAlpha;
     [SerializeField] RectTransform scrollview;
+    [SerializeField] private float blockHoldTime;
 
     GameObject objectPrefab;
 
     MovableObject selectedObject;
     MovableObject copiedObject;
     Renderer copiedObjectRenderer;
+    TriggerBlock selectedTrigger;
 
-    bool isBlockMoving = false;
+    [SerializeField]BuildState currentState;
+
+    bool ignoreButtonDown;
+    [SerializeField]float buttonDownCounter;
+    
+
 
     public void Initialize()
     {
-
+        currentState = BuildState.None;
+        ignoreButtonDown = false;
+        buttonDownCounter = 0;
     }
 
     private void Update()
     {
-        if (isBlockMoving)
+        if (GameManager.Instance.Stage.CurrentState != StageState.Prepare)
+            return;
+
+        if (currentState == BuildState.Moving)
             MoveBlock();
-        if (Input.GetMouseButtonDown(0))
-            SelectBlock();
-        if (Input.GetMouseButtonUp(0))
+        CheckMouseDown();
+        CheckMouseUp();
+    }
+    void CheckMouseDown()
+    {
+        if (!Input.GetMouseButton(0))
+            return;
+
+        if (ignoreButtonDown)
+            return;
+
+        if (currentState == BuildState.Connecting)
+            ConnectInteract();
+        else if (currentState == BuildState.None && buttonDownCounter < blockHoldTime)
+            buttonDownCounter += Time.deltaTime;
+        else
+            SelectMoveBlock();
+    }
+    void CheckMouseUp()
+    {
+        if (!Input.GetMouseButtonUp(0))
+            return;
+        if (currentState == BuildState.Moving)
             SetBlockAsCopied();
-        
+        else if(buttonDownCounter < blockHoldTime)
+            SelectConnectBlock();
+
+        ignoreButtonDown = false;
+        buttonDownCounter = 0;
     }
     public void SetActive(bool isActive)
     {
         gameObject.SetActive(isActive);
     }
-
-    private void SelectBlock()
+    private void SelectConnectBlock()
     {
-        if (GameManager.Instance.Stage.CurrentState != StageState.Prepare)
-            return;
-
-        if (isBlockMoving)
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit[] hits = Physics.RaycastAll(ray);
+        foreach (var ele in hits)
+        {
+            if (ele.collider.TryGetComponent(out selectedTrigger))
+            {
+                GameManager.Instance.Stage.StageObject.EnableInteract(selectedTrigger.ConnectType);
+                currentState = BuildState.Connecting;
+                break;
+            }
+        }
+    }
+    private void ConnectInteract()
+    {
+        bool disconnect = true;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit[] hits = Physics.RaycastAll(ray);
+        foreach (var ele in hits)
+        {
+            if (ele.collider.TryGetComponent(out InteractableBlock interact))
+            {
+                selectedTrigger.Connect(interact);
+                disconnect = false;
+                break;
+            }
+        }
+        if (disconnect)
+            selectedTrigger.Disconnect();
+        GameManager.Instance.Stage.StageObject.DisableInteract();
+        currentState = BuildState.None;
+        selectedTrigger = null;
+        ignoreButtonDown = true;
+    }
+    private void SelectMoveBlock()
+    {
+        if (currentState == BuildState.Moving)
             return;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit[] hits = Physics.RaycastAll(ray);
@@ -63,6 +129,8 @@ public class BuildArea : MonoBehaviour
                     return;
                 }
                 CopySelectedObject(selectedObject.gameObject);
+                selectedObject.Select(Color.green);
+                currentState = BuildState.Moving;
                 break;
             }
         }
@@ -100,11 +168,10 @@ public class BuildArea : MonoBehaviour
     {
         if (selectedObject == null)
             objectPrefab = @object;
-        isBlockMoving = true;
+        currentState = BuildState.Moving;
         copiedObject = Instantiate(@object, @object.transform.position, @object.transform.rotation).GetComponent<MovableObject>();
         copiedObject.Initialize();
-
-        copiedObjectRenderer = copiedObject.GetComponent<Renderer>();
+        copiedObjectRenderer = copiedObject.GetComponent<MeshRenderer>();
         copiedObjectRenderer.material = new Material(copiedObjectRenderer.material);
         Color color = copiedObjectRenderer.material.color;
         color.a = copiedBlockAlpha;
@@ -123,7 +190,8 @@ public class BuildArea : MonoBehaviour
             GameManager.Instance.UI.Stage.Select.RemoveObject(copiedObject.Type);
             if (selectedObject != null)
             {
-                GameManager.Instance.Stage.StageObject.PlacedObjectList.Remove(selectedObject);
+                GameManager.Instance.Stage.StageObject.RemoveMovableObject(selectedObject);
+                selectedObject.DestoryObject();
                 Destroy(selectedObject.gameObject);
             }
         }
@@ -140,19 +208,27 @@ public class BuildArea : MonoBehaviour
                 temp.MovePosition(copiedObject.transform.position);
                 if (copiedObject.IsFlipped != temp.IsFlipped)
                     temp.FlipBlock();
-                GameManager.Instance.Stage.StageObject.PlacedObjectList.Add(temp);
+                CheckTrigger(temp);
+                GameManager.Instance.Stage.StageObject.AddMovableObject(temp);
                 temp.Initialize();
             }
             else if(selectedObject == null){
                 GameManager.Instance.UI.Stage.Select.RemoveObject(copiedObject.Type);
             }
         }
-        
+        copiedObject.DestoryObject();
         Destroy(copiedObject.gameObject);
-        isBlockMoving = false;
+        currentState = BuildState.None;
         selectedObject = null;
     }
-
+    void CheckTrigger(MovableObject temp)
+    {
+        if (temp is TriggerBlock)
+        {
+            if (((TriggerBlock)copiedObject).IsConnected)
+                ((TriggerBlock)temp).Connect(((TriggerBlock)copiedObject).ConnectedInteract);
+        }
+    }
     void ChangeColor(bool isAble)
     {
         if (isAble)
