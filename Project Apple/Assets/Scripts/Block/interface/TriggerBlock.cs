@@ -38,7 +38,6 @@ public abstract class TriggerBlock : Block
     {
         if (currentInteract != null)
         {
-            Debug.Log(gameObject.name + " disconnected");
             currentInteract.Disconnect();
         }
         lineRenderer.SetPosition(1, DefaultPosition);

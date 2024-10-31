@@ -27,7 +27,6 @@ public abstract class InteractableBlock : Block
     }
     public void Connect(TriggerBlock triggerBlock)
     {
-        Debug.Log(triggerBlock.gameObject.name + " connected");
         if (connectedTrigger != null && (isConnected && triggerBlock != connectedTrigger))
             connectedTrigger.Disconnect();
         connectedTrigger = triggerBlock;

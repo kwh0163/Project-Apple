@@ -20,7 +20,7 @@ public class ObjectManager : MonoBehaviour
     {
         areaList.Clear();
         placedObjectList.Clear();
-
+        interactList.Clear();
 
         newton = root.GetComponentInChildren<NewtonObject>();
         var areas = root.GetComponentsInChildren<BuildAreaObject>();

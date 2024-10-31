@@ -40,4 +40,14 @@ public class StageUI : MonoBehaviour
     {
         resetButton.SetActive(false);
     }
+    public void ShowButton()
+    {
+        startButton.SetActive(true);
+        resetButton.SetActive(true);
+    }
+    public void HideButton()
+    {
+        startButton.SetActive(false);
+        resetButton.SetActive(false);
+    }
 }

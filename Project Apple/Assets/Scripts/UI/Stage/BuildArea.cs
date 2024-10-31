@@ -32,7 +32,7 @@ public class BuildArea : MonoBehaviour
 
     public void Initialize()
     {
-        currentState = BuildState.None;
+        SetState(BuildState.None);
         ignoreButtonDown = false;
         buttonDownCounter = 0;
     }
@@ -87,7 +87,7 @@ public class BuildArea : MonoBehaviour
             if (ele.collider.TryGetComponent(out selectedTrigger))
             {
                 GameManager.Instance.Stage.StageObject.EnableInteract(selectedTrigger.ConnectType);
-                currentState = BuildState.Connecting;
+                SetState(BuildState.Connecting);
                 break;
             }
         }
@@ -109,7 +109,7 @@ public class BuildArea : MonoBehaviour
         if (disconnect)
             selectedTrigger.Disconnect();
         GameManager.Instance.Stage.StageObject.DisableInteract();
-        currentState = BuildState.None;
+        SetState(BuildState.None);
         selectedTrigger = null;
         ignoreButtonDown = true;
     }
@@ -130,7 +130,7 @@ public class BuildArea : MonoBehaviour
                 }
                 CopySelectedObject(selectedObject.gameObject);
                 selectedObject.Select(Color.green);
-                currentState = BuildState.Moving;
+                SetState(BuildState.Moving);
                 break;
             }
         }
@@ -168,7 +168,7 @@ public class BuildArea : MonoBehaviour
     {
         if (selectedObject == null)
             objectPrefab = @object;
-        currentState = BuildState.Moving;
+        SetState(BuildState.Moving);
         copiedObject = Instantiate(@object, @object.transform.position, @object.transform.rotation).GetComponent<MovableObject>();
         copiedObject.Initialize();
         copiedObjectRenderer = copiedObject.GetComponent<MeshRenderer>();
@@ -202,15 +202,17 @@ public class BuildArea : MonoBehaviour
             {
                 MovableObject temp;
                 if (selectedObject == null)
+                {
                     temp = Instantiate(objectPrefab, GameManager.Instance.Stage.BlockParentTransform).GetComponent<MovableObject>();
+                    GameManager.Instance.Stage.StageObject.AddMovableObject(temp);
+                }
                 else
                     temp = selectedObject;
                 temp.MovePosition(copiedObject.transform.position);
                 if (copiedObject.IsFlipped != temp.IsFlipped)
                     temp.FlipBlock();
-                CheckTrigger(temp);
-                GameManager.Instance.Stage.StageObject.AddMovableObject(temp);
                 temp.Initialize();
+                CheckTrigger(temp);
             }
             else if(selectedObject == null){
                 GameManager.Instance.UI.Stage.Select.RemoveObject(copiedObject.Type);
@@ -218,7 +220,7 @@ public class BuildArea : MonoBehaviour
         }
         copiedObject.DestoryObject();
         Destroy(copiedObject.gameObject);
-        currentState = BuildState.None;
+        SetState(BuildState.None);
         selectedObject = null;
     }
     void CheckTrigger(MovableObject temp)
@@ -227,6 +229,8 @@ public class BuildArea : MonoBehaviour
         {
             if (((TriggerBlock)copiedObject).IsConnected)
                 ((TriggerBlock)temp).Connect(((TriggerBlock)copiedObject).ConnectedInteract);
+            else
+                ((TriggerBlock)temp).Disconnect();
         }
     }
     void ChangeColor(bool isAble)
@@ -247,5 +251,22 @@ public class BuildArea : MonoBehaviour
         material.EnableKeyword("_ALPHABLEND_ON");
         material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
         material.renderQueue = 3000;  // 투명 객체의 렌더링 순서 설정
+    }
+
+    void SetState(BuildState state)
+    {
+        if(state == BuildState.None)
+        {
+            GameManager.Instance.UI.Stage.ShowButton();
+        }
+        else if(state == BuildState.Moving)
+        {
+            GameManager.Instance.UI.Stage.HideButton();
+        }
+        else if(state == BuildState.Connecting)
+        {
+            GameManager.Instance.UI.Stage.HideButton();
+        }
+        currentState = state;
     }
 }

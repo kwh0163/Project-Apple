@@ -22,3 +22,15 @@ public enum ConnectType
     Rope,
     Chain
 }
+
+public enum SoundEnum
+{
+    Block,
+    Accel,
+    Trampolin,
+    Door,
+    Button,
+    NewtonHit,
+    StageClear,
+    ButtonClick
+}

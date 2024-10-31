@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewBlockData", menuName ="Scriptable/BlockData",order = 0)]
+[CreateAssetMenu(fileName = "NewStageData", menuName ="Scriptable/StageData",order = 0)]
 public class StageData : ScriptableObject
 {
     [SerializeField] private GameObject stagePrefab;

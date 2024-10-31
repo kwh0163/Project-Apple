@@ -23,6 +23,7 @@ public class StageListManager : MonoBehaviour
     public void ClearStage(int currentStageNumber)
     {
         GameManager.Instance.Prefs.ClearStage(currentStageNumber);
+        stageData[currentStageNumber].isStageUnlocked = true;
         stageData[currentStageNumber].isStageCleared = true;
         if(stageData.Count > currentStageNumber + 1)
         {

@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     private static GameManager instance;
     public static GameManager Instance { get { return instance; } }
 
+    public SoundManager Sound { get; private set; }
     public MainMenuManager Menu { get; private set; }
     public StageManager Stage { get; private set; }
     public UIManager UI { get; private set; }
@@ -22,6 +23,9 @@ public class GameManager : MonoBehaviour
 
     void Initialize()
     {
+        Sound = GetComponentInChildren<SoundManager>();
+        Sound.Initialize();
+
         Stage = GetComponentInChildren<StageManager>();
         Stage.Initialize();
 

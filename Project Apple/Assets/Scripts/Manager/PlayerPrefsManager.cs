@@ -4,27 +4,24 @@ using UnityEngine;
 
 public class PlayerPrefsManager : MonoBehaviour
 {
+    string versionKey = "Version";
+    [SerializeField] string currentVersion;
     public void Initialize()
     {
-        string initializeKey = "IsInitialized";
         int count = GameManager.Instance.Stage.StageList.StageCount;
-        if (PlayerPrefs.HasKey(initializeKey))
+        if (!IsVersionMatched())
         {
             for (int i = 0; i < count; i++)
             {
-                if (IsStageCleared(i))
-                    GameManager.Instance.Stage.StageList.ClearStage(i);
-                else
-                    break;
+                if (!PlayerPrefs.HasKey(StageToKey(i)))
+                    PlayerPrefs.SetInt(StageToKey(i), 0);
             }
-            return;
         }
-
-        PlayerPrefs.SetInt(initializeKey, 1);
-
-        for (int i = 0; i < count; i++)
-            PlayerPrefs.SetInt(StageToKey(i), 0);
-        Debug.Log(PlayerPrefs.GetInt(StageToKey(1)));
+        for(int i = 0; i < count; i++)
+        {
+            if (IsStageCleared(i))
+                GameManager.Instance.Stage.StageList.ClearStage(i);
+        }
     }
     public void ClearStage(int stageNum)
     {
@@ -47,6 +44,16 @@ public class PlayerPrefsManager : MonoBehaviour
     string StageToKey(int stageNum)
     {
         return "Stage" + (stageNum + 1).ToString();
+    }
+    bool IsVersionMatched()
+    {
+        if (!PlayerPrefs.HasKey(versionKey) ||
+            !(PlayerPrefs.GetString(versionKey) == currentVersion))
+        {
+            PlayerPrefs.SetString(versionKey, currentVersion);
+            return false;
+        }
+        return true;
     }
     public void ResetData()
     {
