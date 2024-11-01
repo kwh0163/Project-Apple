@@ -124,7 +124,7 @@ MonoBehaviour:
   isStatic: 0
   isFlipped: 0
   objectType: 2
-  blockSound: 2
+  blockSound: 3
   bounciness: 1.15
   continueJumpMult: 1.25
 --- !u!120 &-610407486817194845

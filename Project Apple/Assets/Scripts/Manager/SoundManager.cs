@@ -12,8 +12,12 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip[] clips;
     private Dictionary<SoundEnum, AudioClip> clipList;
 
+    [SerializeField] private float maxVolume;
+    [SerializeField] private float minVolume;
+
     public void Initialize()
     {
+        clipList = new();
         bgmSource.Play();
         for(int i = 0; i < clips.Length; i++)
         {
@@ -24,5 +28,19 @@ public class SoundManager : MonoBehaviour
     public void PlaySound(SoundEnum sound)
     {
         sfxSource.PlayOneShot(clipList[sound]);
+    }
+
+    public void SetBGM(float value)
+    {
+        mixer.SetFloat("BGM", ValueToVolume(value));
+    }
+    public void SetSFX(float value)
+    {
+        mixer.SetFloat("SFX", ValueToVolume(value));
+    }
+
+    float ValueToVolume(float value)
+    {
+        return Mathf.Lerp(minVolume, maxVolume, value);
     }
 }

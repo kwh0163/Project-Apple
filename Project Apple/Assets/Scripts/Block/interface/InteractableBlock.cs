@@ -6,6 +6,7 @@ public abstract class InteractableBlock : Block
 {
     [SerializeField] private ConnectType connectType;
     [SerializeField] private Vector3 connectPosition;
+    [SerializeField] private SoundEnum interactSound;
     public Vector3 ConnectPosition 
     { 
         get
@@ -18,7 +19,10 @@ public abstract class InteractableBlock : Block
     private bool isConnected;
     public bool IsConnected => isConnected;
     private TriggerBlock connectedTrigger;
-    public abstract void Interact();
+    public virtual void Interact()
+    {
+        GameManager.Instance.Sound.PlaySound(interactSound);
+    }
     public override void Initialize()
     {
         base.Initialize();

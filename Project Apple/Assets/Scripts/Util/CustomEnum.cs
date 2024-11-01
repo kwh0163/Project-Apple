@@ -25,6 +25,7 @@ public enum ConnectType
 
 public enum SoundEnum
 {
+    SelectBlock,
     Block,
     Accel,
     Trampolin,
@@ -32,5 +33,6 @@ public enum SoundEnum
     Button,
     NewtonHit,
     StageClear,
-    ButtonClick
+    ButtonClick,
+    Error
 }

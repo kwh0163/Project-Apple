@@ -229,10 +229,11 @@ MonoBehaviour:
   isStatic: 1
   isFlipped: 0
   objectType: 5
-  blockSound: 3
+  blockSound: 1
   connectType: 0
   connectPosition: {x: 0.8, y: 0, z: 0}
-  openingTime: 0.5
+  interactSound: 4
+  openingTime: 1
   targetPosition: {x: 1.7, y: 0, z: 0}
 --- !u!54 &-5973030362048634978
 Rigidbody:

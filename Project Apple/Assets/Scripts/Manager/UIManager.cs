@@ -7,6 +7,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject canvas;
     public StageUI Stage { get; private set; }
     public MenuUI Menu { get; private set; }
+    public OptionUI Option { get; private set; }
     CustomButton[] buttons;
     public void Initialize()
     {
@@ -20,6 +21,9 @@ public class UIManager : MonoBehaviour
 
         Menu = FindObjectOfType<MenuUI>();
         Menu.Initialize();
+
+        Option = FindObjectOfType<OptionUI>();
+        Option.Initialize();
     }
 
     

@@ -123,6 +123,7 @@ MonoBehaviour:
   isStatic: 0
   isFlipped: 0
   objectType: 0
+  blockSound: 1
 --- !u!54 &-5973030362048634978
 Rigidbody:
   m_ObjectHideFlags: 0

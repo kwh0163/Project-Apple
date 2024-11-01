@@ -152,7 +152,7 @@ MonoBehaviour:
   isStatic: 1
   isFlipped: 0
   objectType: 4
-  blockSound: 4
+  blockSound: 5
   isConnected: 0
   currentInteract: {fileID: 0}
   connectType: 0

@@ -86,6 +86,7 @@ public class BuildArea : MonoBehaviour
         {
             if (ele.collider.TryGetComponent(out selectedTrigger))
             {
+                GameManager.Instance.Sound.PlaySound(SoundEnum.SelectBlock);
                 GameManager.Instance.Stage.StageObject.EnableInteract(selectedTrigger.ConnectType);
                 SetState(BuildState.Connecting);
                 break;
@@ -101,13 +102,17 @@ public class BuildArea : MonoBehaviour
         {
             if (ele.collider.TryGetComponent(out InteractableBlock interact))
             {
+                GameManager.Instance.Sound.PlaySound(SoundEnum.SelectBlock);
                 selectedTrigger.Connect(interact);
                 disconnect = false;
                 break;
             }
         }
         if (disconnect)
+        {
+            GameManager.Instance.Sound.PlaySound(SoundEnum.Error);
             selectedTrigger.Disconnect();
+        }
         GameManager.Instance.Stage.StageObject.DisableInteract();
         SetState(BuildState.None);
         selectedTrigger = null;
@@ -168,6 +173,7 @@ public class BuildArea : MonoBehaviour
     {
         if (selectedObject == null)
             objectPrefab = @object;
+        GameManager.Instance.Sound.PlaySound(SoundEnum.SelectBlock);
         SetState(BuildState.Moving);
         copiedObject = Instantiate(@object, @object.transform.position, @object.transform.rotation).GetComponent<MovableObject>();
         copiedObject.Initialize();
@@ -187,6 +193,7 @@ public class BuildArea : MonoBehaviour
         if (GameManager.Instance.UI.Stage.Select.IsOpened
             && Input.mousePosition.y <= scrollview.rect.height)
         {
+            GameManager.Instance.Sound.PlaySound(SoundEnum.SelectBlock);
             GameManager.Instance.UI.Stage.Select.RemoveObject(copiedObject.Type);
             if (selectedObject != null)
             {
@@ -200,6 +207,7 @@ public class BuildArea : MonoBehaviour
             bool isBlockContained = GameManager.Instance.Stage.StageObject.CheckIsContained(copiedObject.Collider);
             if(isBlockContained && !copiedObject.CheckOverlapped(selectedObject?.gameObject))
             {
+                GameManager.Instance.Sound.PlaySound(SoundEnum.SelectBlock);
                 MovableObject temp;
                 if (selectedObject == null)
                 {
@@ -214,8 +222,17 @@ public class BuildArea : MonoBehaviour
                 temp.Initialize();
                 CheckTrigger(temp);
             }
-            else if(selectedObject == null){
-                GameManager.Instance.UI.Stage.Select.RemoveObject(copiedObject.Type);
+            else
+            {
+                GameManager.Instance.Sound.PlaySound(SoundEnum.Error);
+                if (selectedObject == null)
+                {
+                    GameManager.Instance.UI.Stage.Select.RemoveObject(copiedObject.Type);
+                }
+                else
+                {
+                    selectedObject.Release();
+                }
             }
         }
         copiedObject.DestoryObject();
