@@ -5,18 +5,33 @@ using UnityEngine;
 
 public class test : MonoBehaviour
 {
-    float timeCounter = 0;
-    private void Update()
+    [SerializeField] private AudioClip [] clips;
+    private int currentIdx;
+    private AudioSource source;
+
+    private void Awake()
     {
-        if(Input.GetMouseButton(0))
-        {
-            timeCounter += Time.deltaTime;
-        }
-        if (Input.GetMouseButtonUp(0))
-        {
-            Debug.Log("time = " + timeCounter);
-            timeCounter = 0;
-        }
+        source = GetComponent<AudioSource>();
+        currentIdx = 0;
     }
+
+    public void Play()
+    {
+        source.PlayOneShot(clips[currentIdx]);
+        Debug.Log(clips[currentIdx].name);
+    }
+    public void Prev()
+    {
+        currentIdx--;
+        if (currentIdx < 0)
+            currentIdx = clips.Length - 1;
+    }
+    public void Next()
+    {
+        currentIdx++;
+        if (currentIdx >= clips.Length)
+            currentIdx = 0;
+    }
+
 }
 #endif

@@ -64,6 +64,7 @@ public class AppleObject : MovableObject
                 return;
             isEnd = true;
             GameManager.Instance.Stage.EndStage();
+            GameManager.Instance.Sound.PlaySound(SoundEnum.NewtonHit);
             NewtonObject newton = collision.collider.GetComponentInParent<NewtonObject>();
             newton.RigidFreezeNone();
             collision.collider.GetComponent<Rigidbody>().velocity = velocity;

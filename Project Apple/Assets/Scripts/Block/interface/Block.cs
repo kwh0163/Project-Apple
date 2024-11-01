@@ -4,6 +4,7 @@ using UnityEngine.Events;
 
 public class Block : MovableObject
 {
+    [SerializeField] private SoundEnum blockSound;
     public Rigidbody Rigid { get; private set; }
 
     public override void Initialize()
@@ -27,7 +28,10 @@ public class Block : MovableObject
         if (collision.collider.CompareTag("Apple"))
         {
             if (GameManager.Instance.Stage.CurrentState == StageState.Play)
+            {
                 OnAppleEnter(collision);
+                GameManager.Instance.Sound.PlaySound(blockSound);
+            }
         }
     }
     protected sealed override void OnCollisionExit(Collision collision)

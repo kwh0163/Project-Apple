@@ -14,6 +14,7 @@ public class SoundManager : MonoBehaviour
 
     public void Initialize()
     {
+        bgmSource.Play();
         for(int i = 0; i < clips.Length; i++)
         {
             clipList.Add(enums[i], clips[i]);

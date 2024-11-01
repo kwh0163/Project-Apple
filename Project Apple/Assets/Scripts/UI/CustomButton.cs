@@ -17,6 +17,7 @@ public class CustomButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         image = GetComponent<Image>();
         button = GetComponent<Button>();
         defaultSprite = image.sprite;
+        button.onClick.AddListener(() => GameManager.Instance.Sound.PlaySound(SoundEnum.ButtonClick));
     }
 
     public void OnPointerDown(PointerEventData eventData)

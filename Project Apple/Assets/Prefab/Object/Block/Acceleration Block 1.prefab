@@ -124,6 +124,7 @@ MonoBehaviour:
   isStatic: 1
   isFlipped: 0
   objectType: 1
+  blockSound: 1
   power: 8
 --- !u!120 &6361347418557427043
 LineRenderer:

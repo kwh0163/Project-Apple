@@ -27,6 +27,7 @@ public class ClearUI : MonoBehaviour
     IEnumerator OpenCoroutine()
     {
         yield return new WaitForSeconds(waitTime);
+        GameManager.Instance.Sound.PlaySound(SoundEnum.StageClear);
         float timeCounter = 0;
         while(timeCounter <= openTime)
         {
