@@ -6,20 +6,23 @@ public class ObjectManager : MonoBehaviour
 {
     private NewtonObject newton;
     private List<BuildAreaObject> areaList;
-    private List<MovableObject> placedObjectList;
+    private List<AppleObject> appleList;
+    private List<Block> blockList;
     private List<InteractableBlock> interactList;
     
     public void Initialize()
     {
         areaList = new();
-        placedObjectList = new();
+        appleList = new();
+        blockList = new();
         interactList = new();
     }
 
     public void SetStage(GameObject root)
     {
         areaList.Clear();
-        placedObjectList.Clear();
+        appleList.Clear();
+        blockList.Clear();
         interactList.Clear();
 
         newton = root.GetComponentInChildren<NewtonObject>();
@@ -29,10 +32,17 @@ public class ObjectManager : MonoBehaviour
             areaList.Add(ele);
             ele.Initialize();
         }
-        var objects = root.GetComponentsInChildren<MovableObject>();
+        var apples = root.GetComponentsInChildren<AppleObject>();
+        foreach(var ele in apples)
+        {
+            appleList.Add(ele);
+            ele.Initialize();
+            ele.SetSkin(GameManager.Instance.Skin.GetCurrentAppleSkin());
+        }
+        var objects = root.GetComponentsInChildren<Block>();
         foreach(var ele in objects)
         {
-            placedObjectList.Add(ele);
+            blockList.Add(ele);
             ele.Initialize();
         }
         var interacts = root.GetComponentsInChildren<InteractableBlock>();
@@ -50,7 +60,9 @@ public class ObjectManager : MonoBehaviour
         newton.ResetStage();
         foreach (var ele in areaList)
             ele.SetActive(true);
-        foreach (var ele in placedObjectList)
+        foreach (var ele in appleList)
+            ele.ResetStage();
+        foreach (var ele in blockList)
             ele.ResetStage();
         foreach (var ele in interactList)
             ele.ResetStage();
@@ -59,7 +71,11 @@ public class ObjectManager : MonoBehaviour
     {
         foreach (var ele in areaList)
             ele.SetActive(false);
-        foreach (var ele in placedObjectList)
+        foreach (var ele in appleList)
+            ele.PlayStage();
+        foreach (var ele in blockList)
+            ele.PlayStage();
+        foreach (var ele in interactList)
             ele.PlayStage();
     }
 
@@ -95,26 +111,20 @@ public class ObjectManager : MonoBehaviour
     }
     public void AddMovableObject(MovableObject movableObject)
     {
-        if (IsInteract(movableObject, out InteractableBlock temp))
-            interactList.Add(temp);
+        if (movableObject is InteractableBlock)
+            interactList.Add((InteractableBlock)movableObject);
+        else if (movableObject is AppleObject)
+            appleList.Add((AppleObject)movableObject);
         else
-            placedObjectList.Add(movableObject);
+            blockList.Add((Block)movableObject);
     }
     public void RemoveMovableObject(MovableObject movableObject)
     {
-        if (IsInteract(movableObject, out InteractableBlock temp))
-            interactList.Remove(temp);
+        if (movableObject is InteractableBlock)
+            interactList.Remove((InteractableBlock)movableObject);
+        else if (movableObject is AppleObject)
+            appleList.Remove((AppleObject)movableObject);
         else
-            placedObjectList.Remove(movableObject);
-    }
-    bool IsInteract(MovableObject movable, out InteractableBlock interact)
-    {
-        if(movable is InteractableBlock)
-        {
-            interact = (InteractableBlock)movable;
-            return true;
-        }
-        interact = null;
-        return false;
+            blockList.Remove((Block)movableObject);
     }
 }

@@ -5,7 +5,6 @@ using UnityEngine.Audio;
 
 public class SoundManager : MonoBehaviour
 {
-    [SerializeField] private AudioMixer mixer;
     [SerializeField] private AudioSource bgmSource;
     [SerializeField] private AudioSource sfxSource;
     [SerializeField] private SoundEnum[] enums;
@@ -32,15 +31,10 @@ public class SoundManager : MonoBehaviour
 
     public void SetBGM(float value)
     {
-        mixer.SetFloat("BGM", ValueToVolume(value));
+        bgmSource.volume = value;
     }
     public void SetSFX(float value)
     {
-        mixer.SetFloat("SFX", ValueToVolume(value));
-    }
-
-    float ValueToVolume(float value)
-    {
-        return Mathf.Lerp(minVolume, maxVolume, value);
+        sfxSource.volume = value;
     }
 }

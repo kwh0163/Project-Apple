@@ -3,12 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-enum MixerType
-{
-    BGM,
-    SFX
-}
-
 public class Volume : MonoBehaviour
 {
     [SerializeField] private Sprite[] sprites;
@@ -19,7 +13,10 @@ public class Volume : MonoBehaviour
     public void Initialize()
     {
         slider = GetComponent<Slider>();
-        slider.value = .7f;
+        if (mixerType == MixerType.BGM)
+            slider.value = PlayerPrefs.GetFloat("BGM");
+        else if (mixerType == MixerType.SFX)
+            slider.value = PlayerPrefs.GetFloat("SFX");
     }
 
     public void SetVolume()
@@ -37,8 +34,14 @@ public class Volume : MonoBehaviour
             handleImage.sprite = sprites[4];
 
         if (mixerType == MixerType.BGM)
+        {
+            GameManager.Instance.Prefs.SetVolume(MixerType.BGM, value);
             GameManager.Instance.Sound.SetBGM(value);
+        }
         else if (mixerType == MixerType.SFX)
+        {
+            GameManager.Instance.Prefs.SetVolume(MixerType.SFX, value);
             GameManager.Instance.Sound.SetSFX(value);
+        }
     }
 }

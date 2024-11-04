@@ -15,6 +15,8 @@ public class BlockSelect : MonoBehaviour
 
     [SerializeField] private float openTime;
 
+    [SerializeField] private ObjectImage appleImage;
+
     private Dictionary<ObjectType, ObjectImage> blockImages;
 
     StageData currentData;
@@ -35,6 +37,8 @@ public class BlockSelect : MonoBehaviour
         }
         selectWindowDefaultPosition = selectRect.anchoredPosition;
         buttonImageDefaultRotation = buttonRect.rotation.eulerAngles;
+
+        GameManager.Instance.Skin.ChangeSkinEvent.AddListener(SetAppleImage);
     }
 
     public void UseObject(ObjectType type)
@@ -63,6 +67,10 @@ public class BlockSelect : MonoBehaviour
     //        ele.ResetImage();
     //    foreach(var ele in currentData.BlockData)
     //        blockImages[ele].AddBlock();
+    }
+    private void SetAppleImage(AppleData apple)
+    {
+        appleImage.SetImage(apple.Sprite);
     }
     public void SetActive(bool isActive)
     {

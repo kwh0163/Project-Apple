@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class AppleObject : MovableObject
 {
+    private GameObject currentPrefab;
+
     private Rigidbody rigid;
     public Rigidbody Rigid => rigid;
 
@@ -23,11 +25,20 @@ public class AppleObject : MovableObject
     {
         base.Initialize();
 
+        currentPrefab = transform.GetChild(0).gameObject;
         rigid = GetComponent<Rigidbody>();
 
         PrevBlock = null;
 
         SetFreeze();
+    }
+
+    public void SetSkin(AppleData data)
+    {
+        Destroy(currentPrefab);
+        currentPrefab = Instantiate(data.Prefab, transform);
+        currentPrefab.transform.localScale = data.Scale;
+        currentPrefab.transform.rotation = Quaternion.Euler(data.Rotation);
     }
 
     public void SetVelocity(Vector3 vel)
@@ -43,13 +54,14 @@ public class AppleObject : MovableObject
     public override void PlayStage()
     {
         rigid.useGravity = true;
-        rigid.constraints = RigidbodyConstraints.None;
+        rigid.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY;
     }
 
     public override void ResetStage()
     {
         base.ResetStage();
-
+        rigid.velocity = Vector3.zero;
+        rigid.angularVelocity = Vector3.zero;
         SetFreeze();
     }
 
@@ -63,6 +75,7 @@ public class AppleObject : MovableObject
             if (isEnd)
                 return;
             isEnd = true;
+            rigid.constraints = RigidbodyConstraints.None;
             GameManager.Instance.Stage.EndStage();
             GameManager.Instance.Sound.PlaySound(SoundEnum.NewtonHit);
             NewtonObject newton = collision.collider.GetComponentInParent<NewtonObject>();
@@ -75,6 +88,6 @@ public class AppleObject : MovableObject
     {
         isEnd = false;
         rigid.useGravity = false;
-        rigid.constraints = RigidbodyConstraints.FreezeAll;
+        rigid.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY;
     }
 }

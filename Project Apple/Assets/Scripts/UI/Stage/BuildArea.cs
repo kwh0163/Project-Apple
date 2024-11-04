@@ -164,6 +164,7 @@ public class BuildArea : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
+            GameManager.Instance.Sound.PlaySound(SoundEnum.SelectBlock);
             copiedObject.FlipBlock();
         }
 

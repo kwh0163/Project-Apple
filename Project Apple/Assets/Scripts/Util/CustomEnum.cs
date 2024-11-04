@@ -36,3 +36,18 @@ public enum SoundEnum
     ButtonClick,
     Error
 }
+public enum MixerType
+{
+    BGM,
+    SFX
+}
+
+public enum AppleSkinEnum
+{
+    Apple,
+    Tomato,
+    Orange,
+    Cabbage,
+    Berry,
+    Carrot
+}

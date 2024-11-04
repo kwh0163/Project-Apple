@@ -13,6 +13,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void StartMenu()
     {
+        StopCoroutine();
         currentCoroutine = StartCoroutine(PlayApple());
     }
 

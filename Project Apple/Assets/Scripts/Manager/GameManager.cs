@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get { return instance; } }
 
     public SoundManager Sound { get; private set; }
+    public SkinManager Skin { get; private set; }
     public MainMenuManager Menu { get; private set; }
     public StageManager Stage { get; private set; }
     public UIManager UI { get; private set; }
@@ -25,6 +26,9 @@ public class GameManager : MonoBehaviour
     {
         Sound = GetComponentInChildren<SoundManager>();
         Sound.Initialize();
+
+        Skin = GetComponentInChildren<SkinManager>();
+        Skin.Initialize();
 
         Stage = GetComponentInChildren<StageManager>();
         Stage.Initialize();
@@ -56,6 +60,11 @@ public class GameManager : MonoBehaviour
         Stage.InstantiateMenuStage();
         Menu.StartMenu();
         UI.Menu.SetActice(true);
+    }
+    public void ResetMainMenu()
+    {
+        Stage.InstantiateMenuStage();
+        Menu.StartMenu();
     }
 
     public void Quit()

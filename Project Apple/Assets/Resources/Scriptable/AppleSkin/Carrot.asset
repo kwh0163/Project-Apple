@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a90187e04c9b89149847a201e548f53e, type: 3}
+  m_Name: Carrot
+  m_EditorClassIdentifier: 
+  key: Carrot
+  rotation: {x: 90, y: 0, z: 0}
+  scale: {x: 1, y: 1, z: 1}
+  prefab: {fileID: 7584591928906036958, guid: aa925dce6c9f94b4b8818aab84246b9f, type: 3}
+  selectSprite: {fileID: 21300000, guid: 3b6b3e64c6887d740ad85e1b38c5dcbc, type: 3}
+  IsUnlocked: 1
+  IsEquiped: 0

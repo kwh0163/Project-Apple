@@ -9,6 +9,7 @@ public class ObjectImage : MonoBehaviour, IPointerDownHandler
     [SerializeField] private GameObject moveableObject;
     public GameObject GetObject { get { return moveableObject; } }
     private Text countText;
+    private Image image;
 
     private int currentCount;
 
@@ -16,6 +17,7 @@ public class ObjectImage : MonoBehaviour, IPointerDownHandler
     {
         currentCount = 0;
         countText = GetComponentInChildren<Text>();
+        image = GetComponent<Image>();
     }
     public void AddObject()
     {
@@ -40,6 +42,10 @@ public class ObjectImage : MonoBehaviour, IPointerDownHandler
         currentCount = 0;
         SetCount();
         gameObject.SetActive(false);
+    }
+    public void SetImage(Sprite sprite)
+    {
+        image.sprite = sprite;
     }
 
     public void OnPointerDown(PointerEventData eventData)
