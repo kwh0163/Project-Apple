@@ -15,7 +15,7 @@ MonoBehaviour:
   key: Berry
   rotation: {x: 0, y: 0, z: 0}
   scale: {x: 1.2, y: 1.2, z: 1.2}
-  prefab: {fileID: 2380274916805294372, guid: 4cff40cefa656cd47bc206b33441b49f, type: 3}
+  prefab: {fileID: 2380274916805294372, guid: 150f01d85dc45d049ab146289296a813, type: 3}
   selectSprite: {fileID: 21300000, guid: c585c6c8bed501f4fa1b46ab9598ce39, type: 3}
   IsUnlocked: 0
   IsEquiped: 0

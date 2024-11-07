@@ -7,9 +7,9 @@ using UnityEngine.UI;
 public class ObjectImage : MonoBehaviour, IPointerDownHandler
 {
     [SerializeField] private GameObject moveableObject;
+    [SerializeField] private Image thumbnailImage;
     public GameObject GetObject { get { return moveableObject; } }
     private Text countText;
-    private Image image;
 
     private int currentCount;
 
@@ -17,7 +17,6 @@ public class ObjectImage : MonoBehaviour, IPointerDownHandler
     {
         currentCount = 0;
         countText = GetComponentInChildren<Text>();
-        image = GetComponent<Image>();
     }
     public void AddObject()
     {
@@ -45,7 +44,7 @@ public class ObjectImage : MonoBehaviour, IPointerDownHandler
     }
     public void SetImage(Sprite sprite)
     {
-        image.sprite = sprite;
+        thumbnailImage.sprite = sprite;
     }
 
     public void OnPointerDown(PointerEventData eventData)

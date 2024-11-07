@@ -38,6 +38,7 @@ public class BlockSelect : MonoBehaviour
         selectWindowDefaultPosition = selectRect.anchoredPosition;
         buttonImageDefaultRotation = buttonRect.rotation.eulerAngles;
 
+        SetAppleImage(GameManager.Instance.Skin.GetCurrentAppleSkin());
         GameManager.Instance.Skin.ChangeSkinEvent.AddListener(SetAppleImage);
     }
 

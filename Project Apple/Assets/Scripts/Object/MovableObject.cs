@@ -25,11 +25,16 @@ public abstract class MovableObject : MonoBehaviour
         DefaultPosition = transform.position;
         DefaultRotation = transform.rotation;
 
-        outline = GetComponent<Outline>();
+        outline = GetOutline();
+        
 
         Collider = GetComponent<Collider>();
 
         Release();
+    }
+    protected virtual Outline GetOutline()
+    {
+        return GetComponent<Outline>();
     }
     public void Select(Color color)
     {

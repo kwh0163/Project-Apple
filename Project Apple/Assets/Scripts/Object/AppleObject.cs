@@ -6,6 +6,7 @@ using UnityEngine;
 public class AppleObject : MovableObject
 {
     private GameObject currentPrefab;
+    public GameObject GetCurrentPrefab => currentPrefab;
 
     private Rigidbody rigid;
     public Rigidbody Rigid => rigid;
@@ -23,9 +24,11 @@ public class AppleObject : MovableObject
 
     public override void Initialize()
     {
+        currentPrefab = transform.GetChild(0).gameObject;
+        SetSkin();
+
         base.Initialize();
 
-        currentPrefab = transform.GetChild(0).gameObject;
         rigid = GetComponent<Rigidbody>();
 
         PrevBlock = null;
@@ -33,8 +36,14 @@ public class AppleObject : MovableObject
         SetFreeze();
     }
 
-    public void SetSkin(AppleData data)
+    protected override Outline GetOutline()
     {
+        return currentPrefab.GetComponent<Outline>();
+    }
+
+    private void SetSkin()
+    {
+        AppleData data = GameManager.Instance.Skin.GetCurrentAppleSkin();
         Destroy(currentPrefab);
         currentPrefab = Instantiate(data.Prefab, transform);
         currentPrefab.transform.localScale = data.Scale;
@@ -88,6 +97,6 @@ public class AppleObject : MovableObject
     {
         isEnd = false;
         rigid.useGravity = false;
-        rigid.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY;
+        rigid.constraints = RigidbodyConstraints.FreezeAll;
     }
 }

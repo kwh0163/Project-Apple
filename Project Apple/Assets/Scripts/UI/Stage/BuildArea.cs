@@ -135,7 +135,6 @@ public class BuildArea : MonoBehaviour
                 }
                 CopySelectedObject(selectedObject.gameObject);
                 selectedObject.Select(Color.green);
-                SetState(BuildState.Moving);
                 break;
             }
         }
@@ -158,7 +157,7 @@ public class BuildArea : MonoBehaviour
             Vector3 nextPos = hit.point;
             nextPos.z = 0;
             copiedObject.MovePosition(nextPos);
-            bool isBlockContained = GameManager.Instance.Stage.StageObject.CheckIsContained(copiedObject.Collider);
+            bool isBlockContained = GameManager.Instance.Stage.StageObject.CheckIsContained(copiedObject.Collider);           
             ChangeColor(isBlockContained && !copiedObject.CheckOverlapped(selectedObject?.gameObject));
         }
 
@@ -175,16 +174,12 @@ public class BuildArea : MonoBehaviour
         if (selectedObject == null)
             objectPrefab = @object;
         GameManager.Instance.Sound.PlaySound(SoundEnum.SelectBlock);
-        SetState(BuildState.Moving);
         copiedObject = Instantiate(@object, @object.transform.position, @object.transform.rotation).GetComponent<MovableObject>();
         copiedObject.Initialize();
-        copiedObjectRenderer = copiedObject.GetComponent<MeshRenderer>();
-        copiedObjectRenderer.material = new Material(copiedObjectRenderer.material);
-        Color color = copiedObjectRenderer.material.color;
-        color.a = copiedBlockAlpha;
-        copiedObjectRenderer.material.color = color;
 
-        MakeMaterialTransparent(copiedObjectRenderer.material);
+
+        SetCopiedMesh();
+        SetState(BuildState.Moving);
     }
     void SetBlockAsCopied()
     {
@@ -259,6 +254,17 @@ public class BuildArea : MonoBehaviour
             copiedObjectRenderer.material.color = new Color(1, 0, 0, copiedBlockAlpha);
     }
 
+    void SetCopiedMesh()
+    {
+        if (!copiedObject.TryGetComponent(out copiedObjectRenderer))
+            copiedObjectRenderer = ((AppleObject)copiedObject).GetCurrentPrefab.GetComponent<MeshRenderer>();
+        copiedObjectRenderer.material = new Material(copiedObjectRenderer.material);
+        Color color = copiedObjectRenderer.material.color;
+        color.a = copiedBlockAlpha;
+        copiedObjectRenderer.material.color = color;
+
+        MakeMaterialTransparent(copiedObjectRenderer.material);
+    }
     void MakeMaterialTransparent(Material material)
     {
         material.SetFloat("_Mode", 3);  // 3Àº Transparent ¸ðµå

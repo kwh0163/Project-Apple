@@ -37,7 +37,6 @@ public class ObjectManager : MonoBehaviour
         {
             appleList.Add(ele);
             ele.Initialize();
-            ele.SetSkin(GameManager.Instance.Skin.GetCurrentAppleSkin());
         }
         var objects = root.GetComponentsInChildren<Block>();
         foreach(var ele in objects)

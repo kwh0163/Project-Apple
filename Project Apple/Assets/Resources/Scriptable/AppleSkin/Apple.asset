@@ -15,7 +15,7 @@ MonoBehaviour:
   key: Apple
   rotation: {x: 0, y: 0, z: 0}
   scale: {x: 1, y: 1, z: 1}
-  prefab: {fileID: 4008610799542497148, guid: 54545446ea7bb1d49a60e927b5cc5fe6, type: 3}
+  prefab: {fileID: 4008610799542497148, guid: b46a1c80b61b10a4f82294bddd64f062, type: 3}
   selectSprite: {fileID: 21300000, guid: 50c5c7980f1ab29488edcd40931a14f2, type: 3}
   IsUnlocked: 1
   IsEquiped: 0
