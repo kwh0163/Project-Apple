@@ -2531,8 +2531,6 @@ MonoBehaviour:
   copiedBlockAlpha: 0.7
   scrollview: {fileID: 338414223}
   blockHoldTime: 0.2
-  currentState: 0
-  buttonDownCounter: 0
 --- !u!1 &219775316
 GameObject:
   m_ObjectHideFlags: 0
@@ -2644,9 +2642,9 @@ RectTransform:
   - {fileID: 349624079}
   m_Father: {fileID: 210986824}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -154.9, y: 460}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 170, y: -85}
   m_SizeDelta: {x: 120, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &221954846
@@ -3083,11 +3081,11 @@ RectTransform:
   - {fileID: 453386478}
   m_Father: {fileID: 210986824}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 460}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -20}
   m_SizeDelta: {x: 120, y: 120}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &313870113
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7687,9 +7685,9 @@ RectTransform:
   - {fileID: 1498981595}
   m_Father: {fileID: 210986824}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 154.9, y: 460}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: -170, y: -85}
   m_SizeDelta: {x: 120, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1008587967

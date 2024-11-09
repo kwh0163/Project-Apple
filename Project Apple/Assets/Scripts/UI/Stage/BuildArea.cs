@@ -23,16 +23,21 @@ public class BuildArea : MonoBehaviour
     Renderer copiedObjectRenderer;
     TriggerBlock selectedTrigger;
 
-    [SerializeField]BuildState currentState;
+    BuildState currentState;
 
     bool ignoreButtonDown;
-    [SerializeField]float buttonDownCounter;
+
+    bool ignoreFlip;
+    Vector2 firstClickPosition;
+
+    float buttonDownCounter;
     
 
 
     public void Initialize()
     {
         SetState(BuildState.None);
+        ignoreButtonDown = false;
         ignoreButtonDown = false;
         buttonDownCounter = 0;
     }
@@ -141,8 +146,14 @@ public class BuildArea : MonoBehaviour
     }
     private void MoveBlock()
     {
+        if (Input.touchCount == 1)
+        {
+            firstClickPosition = Input.mousePosition;
+            ignoreFlip = false;
+        }
+
         if (GameManager.Instance.UI.Stage.Select.IsOpened
-            &&Input.mousePosition.y <= scrollview.rect.height)
+            &&firstClickPosition.y <= scrollview.rect.height)
         {
             copiedObject.gameObject.SetActive(false);
             return;
@@ -150,7 +161,7 @@ public class BuildArea : MonoBehaviour
         else
             copiedObject.gameObject.SetActive(true);
 
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = Camera.main.ScreenPointToRay(firstClickPosition);
 
         if(Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("BuildArea")))
         {
@@ -161,12 +172,19 @@ public class BuildArea : MonoBehaviour
             ChangeColor(isBlockContained && !copiedObject.CheckOverlapped(selectedObject?.gameObject));
         }
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if(Input.touchCount > 1)
+        {
+            if (ignoreFlip)
+                return;
+            ignoreFlip = true;
+            GameManager.Instance.Sound.PlaySound(SoundEnum.SelectBlock);
+            copiedObject.FlipBlock();
+        }
+        else if (Input.GetKeyDown(KeyCode.R))
         {
             GameManager.Instance.Sound.PlaySound(SoundEnum.SelectBlock);
             copiedObject.FlipBlock();
         }
-
     }
 
     public void CopySelectedObject(GameObject @object)
