@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class UIManager : MonoBehaviour
     CustomButton[] buttons;
     public void Initialize()
     {
+        SetUpCanvasScaler(1920, 1080);
+
         buttons = canvas.GetComponentsInChildren<CustomButton>();
         foreach (var ele in buttons)
             ele.Initialize();
@@ -26,5 +29,11 @@ public class UIManager : MonoBehaviour
         Option.Initialize();
     }
 
-    
+    public void SetUpCanvasScaler(int setWidth, int setHeight)
+    {
+        CanvasScaler canvasScaler = FindObjectOfType<CanvasScaler>();
+        canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        canvasScaler.referenceResolution = new Vector2(setWidth, setHeight);
+        canvasScaler.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
+    }
 }
