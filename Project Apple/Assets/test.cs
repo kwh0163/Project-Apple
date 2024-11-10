@@ -5,32 +5,14 @@ using UnityEngine;
 
 public class test : MonoBehaviour
 {
-    [SerializeField] private AudioClip [] clips;
-    private int currentIdx;
-    private AudioSource source;
-
     private void Awake()
     {
-        source = GetComponent<AudioSource>();
-        currentIdx = 0;
-    }
-
-    public void Play()
-    {
-        source.PlayOneShot(clips[currentIdx]);
-        Debug.Log(clips[currentIdx].name);
-    }
-    public void Prev()
-    {
-        currentIdx--;
-        if (currentIdx < 0)
-            currentIdx = clips.Length - 1;
-    }
-    public void Next()
-    {
-        currentIdx++;
-        if (currentIdx >= clips.Length)
-            currentIdx = 0;
+        Debug.Log(Camera.main.WorldToViewportPoint(transform.position));
+        Vector2 temp = Camera.main.WorldToViewportPoint(transform.position);
+        Vector3 newPos = Camera.main.transform.position;
+        newPos.z *= 1 - (temp.x < temp.y ? temp.x : temp.y);
+        Camera.main.transform.position = newPos;
+        Debug.Log(Camera.main.WorldToViewportPoint(transform.position));
     }
 
 }

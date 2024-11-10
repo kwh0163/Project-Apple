@@ -29,6 +29,7 @@ public class BuildArea : MonoBehaviour
 
     bool ignoreFlip;
     Vector2 firstClickPosition;
+    Vector2 betweenPosition;
 
     float buttonDownCounter;
     
@@ -127,7 +128,8 @@ public class BuildArea : MonoBehaviour
     {
         if (currentState == BuildState.Moving)
             return;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Vector2 mousePos = Input.mousePosition;
+        Ray ray = Camera.main.ScreenPointToRay(mousePos);
         RaycastHit[] hits = Physics.RaycastAll(ray);
         foreach (var ele in hits)
         {
@@ -138,6 +140,7 @@ public class BuildArea : MonoBehaviour
                     selectedObject = null;
                     return;
                 }
+                betweenPosition = (Vector2)ele.transform.position - (Vector2)ele.point;
                 CopySelectedObject(selectedObject.gameObject);
                 selectedObject.Select(Color.green);
                 break;
@@ -146,7 +149,7 @@ public class BuildArea : MonoBehaviour
     }
     private void MoveBlock()
     {
-        if (Input.touchCount == 1)
+        if (Input.touchCount == 1 || Input.GetMouseButton(0))
         {
             firstClickPosition = Input.mousePosition;
             ignoreFlip = false;
@@ -165,7 +168,7 @@ public class BuildArea : MonoBehaviour
 
         if(Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("BuildArea")))
         {
-            Vector3 nextPos = hit.point;
+            Vector3 nextPos = hit.point + (Vector3)betweenPosition;
             nextPos.z = 0;
             copiedObject.MovePosition(nextPos);
             bool isBlockContained = GameManager.Instance.Stage.StageObject.CheckIsContained(copiedObject.Collider);           

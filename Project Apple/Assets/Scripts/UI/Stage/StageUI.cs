@@ -6,6 +6,8 @@ public class StageUI : MonoBehaviour
 {
     [SerializeField] private GameObject startButton;
     [SerializeField] private GameObject resetButton;
+    [SerializeField] private GameObject optionButton;
+    [SerializeField] private GameObject quitButton;
     public BuildArea Area { get; private set; }
     public BlockSelect Select { get; private set; }
 
@@ -29,6 +31,8 @@ public class StageUI : MonoBehaviour
         gameObject.SetActive(isActive);
         startButton.SetActive(isActive);
         resetButton.SetActive(isActive);
+        optionButton.SetActive(isActive);
+        quitButton.SetActive(isActive);
         Clear.Close();
     }
     public void PlayStage()
@@ -44,10 +48,14 @@ public class StageUI : MonoBehaviour
     {
         startButton.SetActive(true);
         resetButton.SetActive(true);
+        optionButton.SetActive(true);
+        quitButton.SetActive(true);
     }
     public void HideButton()
     {
         startButton.SetActive(false);
         resetButton.SetActive(false);
+        optionButton.SetActive(false);
+        quitButton.SetActive(false);
     }
 }
